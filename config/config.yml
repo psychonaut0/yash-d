@@ -11,6 +11,10 @@ header:
   type: "transparent" #{bar | transparent}
   title: "YASH-D" #Title that goes in the header
   
+services:
+  - name: 'NextCloud'
+    icon: '/assets/favicon.svg'
+  - name: 'Portainer'
 
 
 

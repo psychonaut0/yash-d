@@ -1,0 +1,16 @@
+### Yash-d configuration file. 
+
+## General configs
+title: "Yash-D - Yet another Self Hosted Dashboard" #The title for the head
+logo: "logo.svg" 
+favicon: "favicon.svg"
+
+## Header config
+header:
+  enabled: true #Enable or disable header
+  type: "transparent" #{bar | transparent}
+  title: "YASH-D" #Title that goes in the header
+  
+
+
+

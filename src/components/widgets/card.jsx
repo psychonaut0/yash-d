@@ -1,6 +1,7 @@
 import Text from "../atoms/typography"
 import { motion, useMotionValue, useTransform } from "framer-motion"
 import { useState } from "react"
+import Image from "../atoms/image"
 
 export default function Card({ data, index }) {
   console.log(data)
@@ -56,7 +57,7 @@ export default function Card({ data, index }) {
       scale: 1.08,
       transition: {
         ...curve,
-        duration: 0.2, 
+        duration: 0.2,
         delay: index * 0
       }
     },
@@ -64,33 +65,58 @@ export default function Card({ data, index }) {
       scale: 0.95,
       transition: {
         ...curve,
-        duration: 0.2, 
+        duration: 0.2,
         delay: 0
       }
     },
   }
 
   return (
-    <motion.li 
-    variants={variants}
-    style={{ perspective: '200px' }} className="w-1/2 sm:w-1/2 md:w-3/12 lg:w-[16.666667%] xl:w-[14.2857%] 2xl:w-[12.5%]">
+    <motion.li
+      variants={variants}
+      style={{ perspective: '200px' }} className="w-1/2 sm:w-1/2 md:w-3/12 lg:w-[16.666667%] xl:w-[14.2857%] 2xl:w-[12.5%]">
       <motion.div
         onPointerMove={onMove}
         onPointerLeave={restoreMove}
         variants={variants}
-        animate={{scale: 1}}
+        animate={{ scale: 1 }}
         whileHover={"hover"}
         whileTap={"tap"}
         style={{
           rotateY,
           rotateX
         }}
-        transition={{...curve}}
+        transition={{ ...curve }}
         className="p-6"
       >
-        <div className="rounded-md transition-all h-24 flex justify-center items-center  w-full px-4 py-2 bg-neutral-800 shadow-md hover:shadow-xl hover:shadow-black shadow-black">
+        <motion.a
+          href={data.url}
+          target="_blank"
+          initial={{
+            boxShadow: '0.2rem 0.2rem black, -0.2rem -0.2rem #333333'
+          }}
+          whileHover={{
+            boxShadow: '0.5rem 0.5rem black, -0.5rem -0.5rem #333333',
+            transition: {
+              type: 'spring',
+              duration: '0.03'
+            }
+          }}
+          whileTap={{
+            boxShadow: '0.05rem 0.05rem black, -0.05rem -0.05rem #333333',
+            transition: {
+              type: 'spring',
+              duration: '0.03'
+            }
+          }}
+          transition={{
+            type: 'spring',
+            duration: '0.03'
+          }}
+          className=" rounded-sm transition-all cursor-pointer h-24 flex justify-center items-center space-x-4 w-full px-4 py-2 bg-neutral-800  ">
+          <Image className="w-10 h-10" src={data.icon} />
           <Text content={data.name} />
-        </div>
+        </motion.a>
       </motion.div>
     </motion.li>
 

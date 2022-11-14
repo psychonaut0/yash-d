@@ -1,0 +1,15 @@
+{
+  "name": "yash-d",
+  "version": "1.0.0",
+  "description": "Yet another self hosted dashboard",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "install": "concurrently \"cd ./server && yarn install \" \"cd ./client && yarn install \"",
+    "dev": "concurrently \"cd ./server && yarn dev \" \"cd ./client && yarn dev \""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^7.5.0"
+  }
+}

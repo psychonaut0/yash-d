@@ -6,17 +6,18 @@ const { errorHandler } = require("./middleware/errors");
 const app = express();
 const connectDB = require("./config/db");
 
-const fs = require('fs');
-const path = require('path')
-
 connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/tiles", require("./api/tiles"));
+app.use("/api/images", require("./api/images"));
 
-app.use('/media', express.static('public'))
+
+app.use("/images", express.static("public/images"));
+app.use("/pages", express.static("public/pages"));
+
 
 app.use(errorHandler);
 

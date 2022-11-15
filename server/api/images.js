@@ -1,7 +1,4 @@
 const router = require("express").Router();
-const asyncHandler = require('express-async-handler')
-
-
 
 const {
   getImage,
@@ -11,8 +8,8 @@ const {
   deleteImage,
 } = require("../controller/images");
 
-router.route("/").get(getImages).post(setImage)
-router.route("/:id").get(getImage).put(updateImage).delete(deleteImage)
+//image REST API routes
+router.route("/").get(getImages).post(setImage);
+router.route("/:id").get(getImage).put(updateImage).delete(deleteImage);
 
-
-module.exports = router
+module.exports = router;

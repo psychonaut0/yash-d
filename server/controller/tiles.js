@@ -18,6 +18,7 @@ const setTile = asyncHandler(async (req, res) => {
     description: req.body.description,
     localUrl: req.body.localUrl,
     remoteUrl: req.body.remoteUrl,
+    image: req.body.image
   });
   res.status(200).json(tile);
 });

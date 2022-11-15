@@ -9,6 +9,7 @@ const TileSchema = new Schema({
   localUrl: { type: String, match: urlRegex },
   remoteUrl: { type: String, match: urlRegex },
   showTile: { type: Boolean, required: true, default: true },
+  image: {type: Schema.Types.ObjectId, ref: "Image"}
 });
 
 module.exports = mongoose.model("Tile", TileSchema);

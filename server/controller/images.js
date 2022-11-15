@@ -27,7 +27,6 @@ const upload = multer({ storage: storage });
  * - Method GET
  * - Retrieve all images from Image collection.
  * @function getImages
- * @description Method GET
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
@@ -58,11 +57,12 @@ const getImage = asyncHandler(async (req, res) => {
 /**
  * - Method POST
  * - Add an image to Image collection
- * @function getImage
+ * @function setImage
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
 const setImage = [
+  //upload an image and add path to collection
   upload.single("image"),
   asyncHandler(async (req, res) => {
     const image = await Image.create({
@@ -80,7 +80,7 @@ const setImage = [
 /**
  * - Method PUT
  * - Update an image to Image collection
- * @function getImage
+ * @function updateImage
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
@@ -92,16 +92,17 @@ const updateImage = asyncHandler(async (req, res) => {
 
   let filename = req.body.filename;
 
-  const lastIndex = filename.lastIndexOf(".");
-
   const image = await Image.findById(req.params.id);
 
+  //add image extension if no one is provided
+  const lastIndex = filename.lastIndexOf(".");
   if (lastIndex === -1) {
     filename = `${filename}${image.filename.substring(
       image.filename.lastIndexOf(".")
     )}`;
   }
 
+  //rename the file and update the collection
   fs.rename(
     `public/images/${image.filename}`,
     `public/images/${filename}`,
@@ -122,7 +123,7 @@ const updateImage = asyncHandler(async (req, res) => {
 /**
  * - Method DELETE
  * - Delete an image from Image collection
- * @function getImage
+ * @function deleteImage
  * @param {Express.Request} req
  * @param {Express.Response} res
  */

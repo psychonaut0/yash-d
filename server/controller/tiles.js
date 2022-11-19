@@ -5,7 +5,7 @@ const Tile = require("../models/tile");
 /**
  * - Method GET
  * - Retrieve all tiles from Tiles collection.
- * @function getImages
+ * @function getTiles
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
@@ -19,7 +19,7 @@ const getTiles = asyncHandler(async (req, res) => {
 /**
  * - Method POST
  * - Add a tile to Tiles collection.
- * @function getImages
+ * @function setTile
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
@@ -42,7 +42,7 @@ const setTile = asyncHandler(async (req, res) => {
 /**
  * - Method PUT
  * - Update a tile from Tiles collection.
- * @function getImages
+ * @function updateTile
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
@@ -64,7 +64,7 @@ const updateTile = asyncHandler(async (req, res) => {
 /**
  * - Method DELETE
  * - Delete a tile from Tiles collection.
- * @function getImages
+ * @function deleteTile
  * @param {Express.Request} req
  * @param {Express.Response} res
  */

@@ -44,12 +44,12 @@ const getImages = asyncHandler(async (req, res) => {
  * @param {Express.Response} res
  */
 const getImage = asyncHandler(async (req, res) => {
-  if (!req.body.id) {
+  if (!req.params.id) {
     res.status(400);
     throw new Error("id is required to get an image. Please provide an id");
   }
 
-  const image = await Image.findById(req.body.id);
+  const image = await Image.findById(req.params.id);
 
   res.status(200).json(image);
 });
@@ -103,13 +103,19 @@ const updateImage = asyncHandler(async (req, res) => {
   }
 
   //rename the file and update the collection
-  fs.rename(
-    `public/images/${image.filename}`,
-    `public/images/${filename}`,
-    () => {
-      console.log("file renamed!");
-    }
-  );
+  if(!fs.existsSync(`public/images/${filename}`)) {
+    fs.rename(
+      `public/images/${image.filename}`,
+      `public/images/${filename}`,
+      () => {
+        console.log("file renamed!");
+      }
+    );
+  }
+  else{
+    res.status(400);
+    throw new Error("Filename already exist, please use another name");
+  }
 
   image.filename = filename;
   image.sourceUrl = `${req.protocol}://${req.get("host")}/images/${filename}`;

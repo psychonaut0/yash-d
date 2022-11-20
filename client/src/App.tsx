@@ -1,13 +1,12 @@
-import { useState } from 'react'
-
+import Layout from "./components/layout";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className='min-h-screen bg-black'>
-
-    </div>
+    <Layout>
+      <div className="w-full min-h-screen rounded-3xl bg-dark-800 border-dark-600 border-2 p-20">
+        asd
+      </div>
+    </Layout>
   )
 }
 

@@ -3,6 +3,7 @@ const { urlRegex } = require("../utils/regex");
 
 const Schema = mongoose.Schema;
 
+
 const ImageSchema = new Schema(
   {
     sourceUrl: { type: String, match: urlRegex, required: true },

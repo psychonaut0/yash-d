@@ -1,18 +1,24 @@
 const express = require("express");
+const fs = require('fs')
+const path = require('path');
+const cors = require('cors')
+
 require("dotenv").config();
 require("colors");
-const path = require('path');
-const fs = require('fs')
+
 const { errorHandler } = require("./middleware/errors");
 
 const app = express();
-const connectDB = require("./config/db");
 
 // Connect to MongoDB using mongoose
+const connectDB = require("./config/db");
 connectDB();
 
+// General middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({origin: process.env.CLIENT_URI}))
+
 
 // Get all endpoint routes in /api
 fs.readdirSync(path.join(__dirname, 'api')).forEach(file => {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useState } from "react";
 import { getGroups } from "./api/groups"
 import AddGroupDialog from "./components/elements/dialogs/addGroup";
 import Group from "./components/elements/group";
@@ -11,9 +11,16 @@ function App() {
     queryFn: getGroups
   })
 
+  const [showDialog, setShowDialog ] = useState<boolean>(false)
+
   return (
     <>
-      <AddGroupDialog />
+      {
+        showDialog ?
+        <AddGroupDialog setter={setShowDialog}/>
+        :
+        null
+      }
       <Layout>
         {
           (groups.isLoading || !groups.data) ?
@@ -23,7 +30,7 @@ function App() {
               return <Group key={i} data={group} />
             })
         }
-        <div onClick={() => { }} className="w-full border-b-2 cursor-pointer">
+        <div onClick={() => {setShowDialog(true)}} className="w-full border-b-2 cursor-pointer">
           Add group
         </div>
       </Layout>

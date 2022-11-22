@@ -7,6 +7,7 @@ type Props = {
 }
 
 export default function Group({ data }: Props) {
+
  
   return (
     <div className="w-full flex flex-col space-y-10">
@@ -22,7 +23,7 @@ export default function Group({ data }: Props) {
       </div>
       <div className="w-full grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-4  md:gap-5 lg:gap-8 xl:gap-9 2xl:gap-10 px-6">
         {
-          data.tiles.map((tile, i) => {
+          data.tiles?.map((tile, i) => {
             return <Tile key={i} />
           })
         }

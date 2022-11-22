@@ -25,11 +25,10 @@ export default function AddGroupDialog({ setter }: Props) {
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {
-      console.log(err);
+      console.error(err);
       queryClient.setQueryData(["groups"], context?.prevGroup)
     },
     onSettled: (data) => {
-      console.log('ole', data)
       queryClient.invalidateQueries({ queryKey: ["groups"] })
     }
   })

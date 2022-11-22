@@ -13,6 +13,7 @@ type Props = {
 
 export default function RemoveGroupDialog({ setter, id }: Props) {
   const queryClient = useQueryClient()
+  
   const mutation = useMutation({
     mutationFn: (id: string) => removeGroup(id),
     onMutate: async (removedGroupId) => {
@@ -25,11 +26,10 @@ export default function RemoveGroupDialog({ setter, id }: Props) {
       return { prevGroups }
     },
     onError: (err, removedGroupId, context) => {
-      console.log(err)
+      console.error(err)
       return context?.prevGroups
     },
     onSettled: (data) => {
-      console.log('ole', data)
       queryClient.invalidateQueries({ queryKey: ["groups"] })
     }
   })

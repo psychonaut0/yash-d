@@ -11,12 +11,10 @@ export async function addGroup(params: any) {
     {
       ...params
     })
-  console.log('okke')
   return data
 }
 
 export async function removeGroup(id: string) {
   const { data } = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/groups/${id}`)
-  console.log('deleted')
   return data
 }

@@ -3,6 +3,7 @@ import { BiX, BiRightArrowAlt } from "react-icons/bi";
 import { useForm, FieldValues } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addGroup } from "../../../api/groups";
+import { GroupInterface } from "../../../interfaces/api";
 
 type Props = {
   setter: React.Dispatch<React.SetStateAction<boolean>>
@@ -18,11 +19,9 @@ export default function AddGroupDialog({ setter }: Props) {
   const mutation = useMutation({
     mutationFn: (data: FieldValues) => addGroup(data),
     onMutate: async (newGroup) => {
-      console.log('???', newGroup)
       await queryClient.cancelQueries({ queryKey: ["groups"] })
-      const prevGroup = queryClient.getQueryData(["groups"])
+      const prevGroup = queryClient.getQueryData<Array<GroupInterface>>(["groups"])
       queryClient.setQueryData(["groups"], (old: any) => [...old, newGroup ])
-
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {

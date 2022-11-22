@@ -7,11 +7,16 @@ export async function getGroups() {
 }
 
 export async function addGroup(params: any) {
-  await new Promise(resolve => setTimeout(resolve, 5000));
   const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/groups`,
     {
       ...params
     })
   console.log('okke')
+  return data
+}
+
+export async function removeGroup(id: string) {
+  const { data } = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/groups/${id}`)
+  console.log('deleted')
   return data
 }

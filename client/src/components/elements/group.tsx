@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BiPlus, BiTrashAlt } from 'react-icons/bi';
 import RemoveGroupDialog from "./dialogs/removeGroup";
 import { useAtom } from "jotai";
-import { editMode } from "../../state";
+import { dialogType, editMode } from "../../state";
 
 
 type Props = {
@@ -14,25 +14,21 @@ type Props = {
 
 export default function Group({ data }: Props) {
 
-  const [showDialog, setShowDialog] = useState<boolean>(false)
+
 
   const [edit, setEdit] = useAtom(editMode)
 
+  const [showDialog, setShowDialog] = useAtom(dialogType)
+
   return (
     <>
-      {
-        showDialog ?
-          <RemoveGroupDialog setter={setShowDialog} id={data._id} />
-          :
-          null
-      }
       <div className="w-full flex flex-col space-y-10">
         <div className="flex group flex-col space-y-2">
           <div className="flex px-6 justify-between items-center">
             <div className="flex space-x-4 items-center">
               {
                 edit ?
-                  <div onClick={() => { setShowDialog(true) }} className="relative group cursor-pointer flex">
+                  <div onClick={() => { setShowDialog({type: "remove-group", groupId: data._id}) }} className="relative group cursor-pointer flex">
                     <BiTrashAlt className="relative z-20 text-red-500 w-full h-full peer p-2 border rounded-md border-red-500" size={"1rem"} />
                     <BiTrashAlt className="transition-all text-red-500 w-[0%] h-[0%] scale-0 peer-hover:scale-100 p-0 peer-hover:w-full peer-hover:h-full absolute peer-hover:blur-md peer-hover:p-2 peer-hover:border rounded-md border-red-500" size={"1rem"} />
                   </div>

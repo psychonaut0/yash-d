@@ -4,17 +4,18 @@ import { useForm, FieldValues } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addGroup } from "../../../api/groups";
 import { GroupInterface } from "../../../interfaces/api";
+import { useAtom } from "jotai";
+import { dialogType } from "../../../state";
 
-type Props = {
-  setter: React.Dispatch<React.SetStateAction<boolean>>
-}
 
-export default function AddGroupDialog({ setter }: Props) {
+
+export default function AddGroupDialog() {
 
   const { register, handleSubmit } = useForm();
 
   const queryClient = useQueryClient()
 
+  const [showDialog, setShowDialog] = useAtom(dialogType)
 
   const mutation = useMutation({
     mutationFn: (data: FieldValues) => addGroup(data),
@@ -35,7 +36,7 @@ export default function AddGroupDialog({ setter }: Props) {
 
   function submit(formData: FieldValues) {
     mutation.mutate(formData)
-    setter(false)
+    setShowDialog({type: "none"})
   }
 
 
@@ -57,7 +58,7 @@ export default function AddGroupDialog({ setter }: Props) {
           </div>
         </label>
         <div className="w-full flex space-x-6 justify-end px-6 pt-4">
-          <div onClick={() => { setter(false) }} className="cursor-pointer flex px-4 py-2 items-center border-primary-400 text-primary-400 border rounded-md"><BiX size={"2rem"} className="pr-2" />Cancel</div>
+          <div onClick={() => { setShowDialog({type: "none"}) }} className="cursor-pointer flex px-4 py-2 items-center border-primary-400 text-primary-400 border rounded-md"><BiX size={"2rem"} className="pr-2" />Cancel</div>
           <button type="submit" className="flex items-center  px-4 py-2 bg-primary rounded-md border-primary-400 border ">Add <BiRightArrowAlt size={"2rem"} className="pl-2" /></button>
         </div>
       </form>

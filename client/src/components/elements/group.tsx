@@ -51,7 +51,7 @@ export default function Group({ data }: Props) {
           }
           {
             edit ?
-            <div className="group relative cursor-pointer w-full h-full border-2 px-2 py-4 rounded-lg flex justify-center items-center">
+            <div onClick={() => {setShowDialog({type: "add-tile", groupId: data._id})}} className="group relative cursor-pointer w-full h-full border-2 px-2 py-4 rounded-lg flex justify-center items-center">
               <BiPlus className="transition-all absolute group-hover:blur-md" size={"3rem"} />
               <BiPlus size={"3rem"} />             
             </div>

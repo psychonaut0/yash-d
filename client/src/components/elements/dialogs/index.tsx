@@ -4,11 +4,8 @@ import AddGroupDialog from "./addGroup"
 import AddTileDialog from "./addTile"
 import RemoveGroupDialog from "./removeGroup"
 
-type Props = {
-  id?: string
-}
 
-export default function Dialog({id}: Props) {
+export default function Dialog() {
 
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
@@ -16,7 +13,7 @@ export default function Dialog({id}: Props) {
   const dialogTypes = {
     "add-group": <AddGroupDialog />,
     "remove-group": showDialog.groupId && <RemoveGroupDialog id={showDialog.groupId}/>,
-    "add-tile": <AddTileDialog />,
+    "add-tile": showDialog.groupId && <AddTileDialog groupId={showDialog.groupId} />,
     "none": null
   }
 

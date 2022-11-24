@@ -1,28 +1,97 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { BiRightArrowAlt, BiX } from "react-icons/bi";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { getImages } from "../../../api/images";
+import { addGroupTile } from "../../../api/groups";
+import { addImage, getImages } from "../../../api/images";
+import { addTile } from "../../../api/tiles";
+import { ImageInterface } from "../../../interfaces/api";
 import { dialogType } from "../../../state";
 import DialogLayout from "./layout";
 
 
-export default function AddTileDialog() {
+interface InputValues {
+  title: string,
+  description?: string,
+  localUrl?: string,
+  remoteUrl?: string,
+  imageFile?: FileList,
+  image?: string
+}
 
-  const { register, handleSubmit } = useForm();
+type Props = {
+  groupId: string
+}
+
+export default function AddTileDialog({ groupId }: Props) {
+
+
+  const queryClient = useQueryClient()
+  const { register, handleSubmit, setValue, getValues } = useForm<InputValues>();
 
   const [showDialog, setShowDialog] = useAtom(dialogType);
+  const [selectedImage, setSelectedImage] = useState<number | undefined>()
+
+
 
   const images = useQuery({
     queryKey: ['images'],
     queryFn: getImages
   })
 
+  function handleImageChange(i: number) {
+    let image = images.data?.[i]._id
 
-  function submit(formData: FieldValues) {
-    console.log(formData)
+    setValue('image', image)
+    if (selectedImage !== i) {
+      setSelectedImage(i)
+    }
+    else {
+      setSelectedImage(undefined)
+    }
   }
+
+  const mutationImage = useMutation({
+    mutationFn: (data: File | null) => addImage(data),
+    onMutate: async (newGroup) => {
+      await queryClient.cancelQueries({ queryKey: ["images"] })
+      const prevGroup = queryClient.getQueryData<Array<ImageInterface>>(["images"])
+      queryClient.setQueryData(["images"], (old: any) => [...old, newGroup])
+      return { prevGroup }
+    },
+    onError: (err, newGroup, context) => {
+      console.error(err);
+      queryClient.setQueryData(["images"], context?.prevGroup)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["images"] })
+    }
+  })
+
+  const mutationTile = useMutation({
+    mutationFn: (data: InputValues) => addTile(data)
+  })
+
+  const mutationGroup = useMutation({
+    mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1])
+  })
+
+  async function submit(formData: InputValues) {
+
+    let updatedForm = formData
+
+    if (updatedForm.imageFile?.length === 1) {
+      const imageData = await mutationImage.mutateAsync(updatedForm.imageFile.item(0));
+      updatedForm.image = await imageData._id
+    }
+    const tileData = await mutationTile.mutateAsync(updatedForm)
+    const groupData = await mutationGroup.mutateAsync([groupId, { tileId: tileData._id }])
+  }
+
+
+
 
   return (
     <DialogLayout title="Add a tile">
@@ -55,40 +124,32 @@ export default function AddTileDialog() {
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
-        <Tabs>
-          <TabList>
-            <Tab>Choose an icon:</Tab>
-            <Tab>Upload</Tab>
+        <p className="pl-2 text-xl">Icon: </p>
+        <Tabs onSelect={(index) => {
+          setValue("imageFile", undefined)
+          setSelectedImage(undefined)
+          setValue("image", "")
+        }}>
+          <TabList className={"flex space-x-2"}>
+            <Tab disabledClassName="bg-dark-600 w-full">Media</Tab>
+            <Tab disabledClassName="bg-red-600 w-full">Upload</Tab>
           </TabList>
-          <TabPanel className={"max-w-[600px]"}>
-            <div className="h-36 w-full overflow-y-auto grid grid-cols-4 gap-6 px-4">
+          <TabPanel>
+            <div className="h-36 w-[600px] overflow-y-auto grid grid-cols-4 gap-6 px-4">
               {
                 images.data?.map((image, i) => {
-                  return <div className="cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md" key={i}>
+                  return <div onClick={() => { handleImageChange(i) }} className={`transition-all ${selectedImage === i ? "border-primary border-2" : "border-light border-2"} cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md`} key={i}>
                     <img className="object-contain " src={image.sourceUrl} />
                   </div>
                 })
               }
-              {
-                images.data?.map((image, i) => {
-                  return <div className="cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md" key={i}>
-                    <img className="object-contain " src={image.sourceUrl} />
-                  </div>
-                })
-              }
-              {
-                images.data?.map((image, i) => {
-                  return <div className="cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md" key={i}>
-                    <img className="object-contain " src={image.sourceUrl} />
-                  </div>
-                })
-              }
+              <input defaultValue={""} {...register('image')} type={"hidden"} />
             </div>
           </TabPanel>
-          <TabPanel >
-          <label className="w-[600px] flex flex-col space-y-2 ">
+          <TabPanel>
+            <label className="w-[600px] h-36 flex flex-col space-y-2  justify-center items-center">
               <div className="relative w-full flex flex-col justify-center items-center">
-                <input {...register('image')} className="peer ya-input cursor-pointer" placeholder="Group title..." type={"file"} />
+                <input accept="image/*" {...register('imageFile')} className="peer ya-input cursor-pointer" placeholder="Group title..." type={"file"} />
                 <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
               </div>
             </label>
@@ -96,7 +157,7 @@ export default function AddTileDialog() {
         </Tabs>
         <div className="w-full flex space-x-6 justify-end px-6 pt-4">
           <div onClick={() => { setShowDialog({ type: "none" }) }} className="cursor-pointer flex px-4 py-2 items-center border-primary-400 text-primary-400 border rounded-md"><BiX size={"2rem"} className="pr-2" />Cancel</div>
-          <button type="submit" className="flex items-center  px-4 py-2 bg-primary rounded-md border-primary-400 border ">Add <BiRightArrowAlt size={"2rem"} className="pl-2" /></button>
+          <button type="submit" className=" disabled:opacity-50 disabled:cursor-not-allowed flex items-center  px-4 py-2 bg-primary rounded-md border-primary-400 border ">Add <BiRightArrowAlt size={"2rem"} className="pl-2" /></button>
         </div>
       </form>
     </DialogLayout>

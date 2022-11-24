@@ -6,3 +6,20 @@
 .ya-input {
   @apply relative z-10 w-full py-2 px-2 border-0 bg-dark-600 rounded-md focus:border-0 focus:outline-none
 }
+
+.react-tabs__tab {
+  @apply bg-primary rounded-t-md px-4 py-2 relative z-0 transition-all #{!important};
+}
+
+.react-tabs__tab--selected {
+  background: transparent !important;
+  @apply bg-dark-600 text-light border-2 border-primary relative z-20 top-[2px] #{!important};
+}
+
+.react-tabs__tab:focus:after {
+  background: none !important;
+}
+
+.react-tabs__tab-panel--selected {
+  @apply py-4 px-2 relative z-10 rounded-md rounded-tl-none bg-dark-600 border-2 border-primary #{!important};
+}

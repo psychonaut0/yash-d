@@ -10,7 +10,9 @@ const Tile = require("../models/tile");
  * @param {Express.Response} res
  */
 const getTiles = asyncHandler(async (req, res) => {
-  const tiles = await Tile.find();
+  const tiles = await Tile.find().populate('image');
+
+  
 
   res.status(200).json(tiles);
 });
@@ -36,6 +38,9 @@ const setTile = asyncHandler(async (req, res) => {
     remoteUrl: req.body.remoteUrl,
     image: req.body.image
   });
+
+  await tile.populate('image')
+
   res.status(200).json(tile);
 });
 

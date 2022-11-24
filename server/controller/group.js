@@ -10,7 +10,12 @@ const Group = require("../models/group")
  * @param {Express.Response} res
  */
 const getGroups = asyncHandler(async (req, res) => {
-  const groups = await Group.find();
+  const groups = await Group
+  .find()
+  .populate({
+    path: 'tiles',
+    populate: { path: 'image' }
+  });
 
   res.status(200).json(groups);
 });
@@ -64,6 +69,33 @@ const updateGroup = asyncHandler(async (req, res) => {
 });
 
 
+/**
+ * - Method PUT
+ * - Update a group from Groups collection.
+ * @function updateGroup
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ */
+const addTileToGroup = asyncHandler(async (req, res) => {
+  const group = await Group.findById(req.params.id);
+
+  if (!group) {
+    res.status(400);
+    throw new Error("Group not found!");
+  }
+
+  if(!req.body.tileId){
+    res.status(400);
+    throw new Error("No field 'tileId' provided, please provide a tileId!");
+  }
+  group.tiles.push(req.body.tileId)
+
+  await group.save()
+
+  res.status(200).json(group);
+});
+
+
 
 /**
  * - Method DELETE
@@ -72,7 +104,7 @@ const updateGroup = asyncHandler(async (req, res) => {
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
- const deleteGroup = asyncHandler(async (req, res) => {
+const deleteGroup = asyncHandler(async (req, res) => {
   const group = await Group.findById(req.params.id);
 
   if (!group) {
@@ -90,5 +122,6 @@ module.exports = {
   getGroups,
   setGroup,
   updateGroup,
-  deleteGroup
+  deleteGroup,
+  addTileToGroup
 }

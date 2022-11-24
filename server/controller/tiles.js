@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Tile = require("../models/tile");
+const Image = require("../models/image")
 
 
 /**
@@ -31,12 +32,24 @@ const setTile = asyncHandler(async (req, res) => {
     throw new Error("Tile title is required!");
   }
 
+  
+
+  if(req.body.image !== ""){
+    const image = await Image.findById(req.body.image)
+    if(!image){
+      res.status(400);
+      throw new Error("Image not found");
+    }
+  }
+
+  
+
   const tile = await Tile.create({
     title: req.body.title,
     description: req.body.description,
     localUrl: req.body.localUrl,
     remoteUrl: req.body.remoteUrl,
-    image: req.body.image
+    image: req.body.image !== "" ? req.body.image : null
   });
 
   await tile.populate('image')

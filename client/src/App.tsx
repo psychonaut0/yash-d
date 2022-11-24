@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { getGroups } from "./api/groups"
+import { getTiles } from "./api/tiles";
 import Dialog from "./components/elements/dialogs";
 import Group from "./components/elements/group";
 import Layout from "./components/layout";
@@ -12,6 +13,11 @@ function App() {
   const groups = useQuery({
     queryKey: ['groups'],
     queryFn: getGroups
+  })
+
+  const tiles = useQuery({
+    queryKey: ['tiles'],
+    queryFn: getTiles
   })
 
 

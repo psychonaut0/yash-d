@@ -40,6 +40,15 @@ module.exports = {
           DEFAULT: "#FCEEEC",
         },
       },
+      animation: {
+        marquee: 'marquee 6s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
+      },
     },
   },
   plugins: [],

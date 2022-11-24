@@ -7,7 +7,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { addGroupTile } from "../../../api/groups";
 import { addImage, getImages } from "../../../api/images";
 import { addTile } from "../../../api/tiles";
-import { ImageInterface } from "../../../interfaces/api";
+import { GroupInterface, ImageInterface, TileInterface } from "../../../interfaces/api";
 import { dialogType } from "../../../state";
 import DialogLayout from "./layout";
 
@@ -71,11 +71,37 @@ export default function AddTileDialog({ groupId }: Props) {
   })
 
   const mutationTile = useMutation({
-    mutationFn: (data: InputValues) => addTile(data)
+    mutationFn: (data: InputValues) => addTile(data),
+    onMutate: async (newGroup) => {
+      await queryClient.cancelQueries({ queryKey: ["tiles"] })
+      const prevGroup = queryClient.getQueryData<Array<TileInterface>>(["tiles"])
+      queryClient.setQueryData(["tiles"], (old: any) => [...old, newGroup] )
+      return { prevGroup }
+    },
+    onError: (err, newGroup, context) => {
+      console.error(err);
+      queryClient.setQueryData(["tiles"], context?.prevGroup)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["tiles"] })
+    }
   })
 
   const mutationGroup = useMutation({
-    mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1])
+    mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1]),
+    onMutate: async (newGroup) => {
+      await queryClient.cancelQueries({ queryKey: ["groups"] })
+      const prevGroup = queryClient.getQueryData<Array<GroupInterface>>(["groups"])
+      queryClient.setQueryData(["groups"], (old: any) => [...old, newGroup])
+      return { prevGroup }
+    },
+    onError: (err, newGroup, context) => {
+      console.error(err);
+      queryClient.setQueryData(["groups"], context?.prevGroup)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["groups"] })
+    }
   })
 
   async function submit(formData: InputValues) {
@@ -87,7 +113,8 @@ export default function AddTileDialog({ groupId }: Props) {
       updatedForm.image = await imageData._id
     }
     const tileData = await mutationTile.mutateAsync(updatedForm)
-    const groupData = await mutationGroup.mutateAsync([groupId, { tileId: tileData._id }])
+    await mutationGroup.mutateAsync([groupId, { tileId: tileData._id }])
+    setShowDialog({type: "none"})
   }
 
 

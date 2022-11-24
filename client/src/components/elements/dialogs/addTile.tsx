@@ -110,20 +110,22 @@ export default function AddTileDialog({ groupId }: Props) {
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
-        <label className="w-full flex flex-col space-y-2">
-          <p className="pl-2 text-xl">Local URL: </p>
-          <div className="relative w-full flex flex-col justify-center items-center">
-            <input {...register('localUrl')} className="peer ya-input" placeholder="e.g. http://localhost:1234 (optional)..." type={"url"} />
-            <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
-          </div>
-        </label>
-        <label className="w-full flex flex-col space-y-2">
-          <p className="pl-2 text-xl">Remote URL: </p>
-          <div className="relative w-full flex flex-col justify-center items-center">
-            <input {...register('remoteUrl')} className="peer ya-input" placeholder="e.g. https://nextcloud.com (optional)..." type={"url"} />
-            <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
-          </div>
-        </label>
+        <div className="w-full flex space-x-6 justify-center">
+          <label className="w-full flex flex-col space-y-2">
+            <p className="pl-2 text-xl">Local URL: </p>
+            <div className="relative w-full flex flex-col justify-center items-center">
+              <input {...register('localUrl')} className="peer ya-input" placeholder="e.g. http://localhost:1234 (optional)..." type={"url"} />
+              <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
+            </div>
+          </label>
+          <label className="w-full flex flex-col space-y-2">
+            <p className="pl-2 text-xl">Remote URL: </p>
+            <div className="relative w-full flex flex-col justify-center items-center">
+              <input {...register('remoteUrl')} className="peer ya-input" placeholder="e.g. https://nextcloud.com (optional)..." type={"url"} />
+              <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
+            </div>
+          </label>
+        </div>
         <p className="pl-2 text-xl">Icon: </p>
         <Tabs onSelect={(index) => {
           setValue("imageFile", undefined)
@@ -131,21 +133,23 @@ export default function AddTileDialog({ groupId }: Props) {
           setValue("image", "")
         }}>
           <TabList className={"flex space-x-2"}>
-            <Tab disabledClassName="bg-dark-600 w-full">Media</Tab>
+            {images.data?.length !== 0 && <Tab disabledClassName="bg-dark-600 w-full">Media</Tab>}
             <Tab disabledClassName="bg-red-600 w-full">Upload</Tab>
           </TabList>
-          <TabPanel>
-            <div className="h-36 w-[600px] overflow-y-auto grid grid-cols-4 gap-6 px-4">
-              {
-                images.data?.map((image, i) => {
-                  return <div onClick={() => { handleImageChange(i) }} className={`transition-all ${selectedImage === i ? "border-primary border-2" : "border-light border-2"} cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md`} key={i}>
-                    <img className="object-contain " src={image.sourceUrl} />
-                  </div>
-                })
-              }
-              <input defaultValue={""} {...register('image')} type={"hidden"} />
-            </div>
-          </TabPanel>
+          {images.data?.length !== 0 &&
+            <TabPanel>
+              <div className="h-36 w-[600px] overflow-y-auto grid grid-cols-4 gap-6 px-4">
+                {
+                  images.data?.map((image, i) => {
+                    return <div onClick={() => { handleImageChange(i) }} className={`transition-all ${selectedImage === i ? "border-primary border-2" : "border-light border-2"} cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md`} key={i}>
+                      <img className="object-contain " src={image.sourceUrl} />
+                    </div>
+                  })
+                }
+                <input defaultValue={""} {...register('image')} type={"hidden"} />
+              </div>
+            </TabPanel>
+          }
           <TabPanel>
             <label className="w-[600px] h-36 flex flex-col space-y-2  justify-center items-center">
               <div className="relative w-full flex flex-col justify-center items-center">

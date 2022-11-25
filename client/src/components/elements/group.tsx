@@ -24,7 +24,7 @@ export default function Group({ data }: Props) {
   return (
     <>
       <div className="w-full flex flex-col space-y-10">
-        <div className="flex group flex-col space-y-2">
+        <div className="w-full flex group flex-col space-y-2">
           <div className="flex px-6 justify-between items-center">
             <div className="flex space-x-4 items-center">
               {
@@ -48,7 +48,7 @@ export default function Group({ data }: Props) {
           }
           {
             edit ?
-              <div onClick={() => { setShowDialog({ type: "add-tile", groupId: data._id }) }} className="group relative cursor-pointer w-full h-full border-2 px-2 py-4 rounded-lg flex justify-center items-center">
+              <div onClick={() => { setShowDialog({ type: "add-tile-to-group", groupId: data._id }) }} className="group relative cursor-pointer w-full h-full border-2 px-2 py-4 rounded-lg flex justify-center items-center">
                 <BiPlus className="transition-all absolute group-hover:blur-md" size={"3rem"} />
                 <BiPlus size={"3rem"} />
               </div>

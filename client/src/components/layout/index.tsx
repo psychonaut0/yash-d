@@ -20,11 +20,11 @@ export default function Layout({ children }: Props) {
   return (
     <>
     <Dialog />
-    <div className="w-full flex flex-col items-center min-h-screen bg-dark text-light">
+    <div className="w-full h-full flex flex-col items-center min-h-screen bg-dark text-light">
       <Header />
-      <div className="flex w-full max-w-[1800px] relative z-20">
+      <div className="flex w-full h-full max-w-[1800px] relative z-20">
         <Sidebar groups={groups.data}/>
-        <div className="w-full min-h-screen rounded-3xl bg-dark-800 border-dark-600 border-2 p-4 md:p-20">
+        <div className="w-full min-h-[700px] rounded-3xl bg-dark-800 border-dark-600 border-2 p-4 md:p-20">
           <Outlet />
         </div>
         <div className="md:w-10" />

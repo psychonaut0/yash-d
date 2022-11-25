@@ -1,15 +1,15 @@
-import DialogLayout from "./layout";
-import { BiX, BiRightArrowAlt } from "react-icons/bi";
-import { useForm, FieldValues } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addGroup } from "../../../api/groups";
-import { GroupInterface, ImageInterface } from "../../../interfaces/api";
 import { useAtom } from "jotai";
-import { dialogType } from "../../../state";
-import { addTile } from "../../../api/tiles";
+import { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { BiRightArrowAlt, BiX } from "react-icons/bi";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { useState } from "react";
+import { addGroupTile } from "../../../api/groups";
 import { addImage, getImages } from "../../../api/images";
+import { addTile } from "../../../api/tiles";
+import { GroupInterface, ImageInterface, TileInterface } from "../../../interfaces/api";
+import { dialogType } from "../../../state";
+import DialogLayout from "./layout";
 
 
 interface InputValues {
@@ -21,15 +21,20 @@ interface InputValues {
   image?: string
 }
 
-export default function AddTileDialog() {
+type Props = {
+  groupId: string
+}
 
-  const { register, handleSubmit, setValue, getValues } = useForm<InputValues>();
+export default function AddTileToGroupDialog({ groupId }: Props) {
+
 
   const queryClient = useQueryClient()
+  const { register, handleSubmit, setValue, getValues } = useForm<InputValues>();
 
-  const [showDialog, setShowDialog] = useAtom(dialogType)
-
+  const [showDialog, setShowDialog] = useAtom(dialogType);
   const [selectedImage, setSelectedImage] = useState<number | undefined>()
+
+
 
   const images = useQuery({
     queryKey: ['images'],
@@ -65,12 +70,12 @@ export default function AddTileDialog() {
     }
   })
 
-  const mutation = useMutation({
-    mutationFn: (data: FieldValues) => addTile(data),
+  const mutationTile = useMutation({
+    mutationFn: (data: InputValues) => addTile(data),
     onMutate: async (newGroup) => {
       await queryClient.cancelQueries({ queryKey: ["tiles"] })
-      const prevGroup = queryClient.getQueryData<Array<GroupInterface>>(["tiles"])
-      queryClient.setQueryData(["tiles"], (old: any) => [...old, newGroup ])
+      const prevGroup = queryClient.getQueryData<Array<TileInterface>>(["tiles"])
+      queryClient.setQueryData(["tiles"], (old: any) => [...old, newGroup] )
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {
@@ -82,33 +87,53 @@ export default function AddTileDialog() {
     }
   })
 
-  async function submit(formData: FieldValues) {
+  const mutationGroup = useMutation({
+    mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1]),
+    onMutate: async (newGroup) => {
+      await queryClient.cancelQueries({ queryKey: ["groups"] })
+      const prevGroup = queryClient.getQueryData<Array<GroupInterface>>(["groups"])
+      queryClient.setQueryData(["groups"], (old: any) => [...old, newGroup])
+      return { prevGroup }
+    },
+    onError: (err, newGroup, context) => {
+      console.error(err);
+      queryClient.setQueryData(["groups"], context?.prevGroup)
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["groups"] })
+    }
+  })
+
+  async function submit(formData: InputValues) {
+
     let updatedForm = formData
 
     if (updatedForm.imageFile?.length === 1) {
       const imageData = await mutationImage.mutateAsync(updatedForm.imageFile.item(0));
       updatedForm.image = await imageData._id
     }
-    await mutation.mutateAsync(updatedForm)
-
+    const tileData = await mutationTile.mutateAsync(updatedForm)
+    await mutationGroup.mutateAsync([groupId, { tileId: tileData._id }])
     setShowDialog({type: "none"})
   }
 
 
+
+
   return (
-    <DialogLayout title="Add a new tile">
+    <DialogLayout title="Add a tile">
       <form onSubmit={handleSubmit((data) => submit(data))} className="py-4 flex flex-col space-y-4">
         <label className="w-full flex flex-col space-y-2">
           <p className="pl-2 text-xl">Title: <span className="text-primary">*</span></p>
           <div className="relative w-full flex flex-col justify-center items-center">
-            <input required {...register('title')} className="peer relative z-10 w-full py-2 px-2 border-0 bg-dark-600 rounded-md focus:border-0 focus:outline-none" placeholder="Tile title..." type={"text"} />
+            <input required {...register('title')} className="peer ya-input" placeholder="Tile title..." type={"text"} />
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
         <label className="w-full flex flex-col space-y-2">
-          <p className="pl-2 text-xl">Description:</p>
+          <p className="pl-2 text-xl">Description: </p>
           <div className="relative w-full flex flex-col justify-center items-center">
-            <input {...register('description')} className="peer relative z-10 w-full py-2 px-2 border-0 bg-dark-600 rounded-md focus:border-0 focus:outline-none" placeholder="Tile short description..." type={"text"} />
+            <input {...register('description')} className="peer ya-input" placeholder="Tile short description..." type={"text"} />
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
@@ -155,7 +180,7 @@ export default function AddTileDialog() {
           <TabPanel>
             <label className="w-[600px] h-36 flex flex-col space-y-2  justify-center items-center">
               <div className="relative w-full flex flex-col justify-center items-center">
-                <input accept="image/*" {...register('imageFile')} className="peer ya-input cursor-pointer" placeholder="tile title..." type={"file"} />
+                <input accept="image/*" {...register('imageFile')} className="peer ya-input cursor-pointer" placeholder="Group title..." type={"file"} />
                 <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
               </div>
             </label>

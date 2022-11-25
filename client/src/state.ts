@@ -1,7 +1,7 @@
 import {atom} from "jotai"
 
 type Dialogs = {
- type: "none" | "add-group" | "remove-group" | "add-tile",
+ type: "none" | "add-group" | "remove-group" | "add-tile" | "add-tile-to-group",
  groupId?: string,
  tileId?: string
 }

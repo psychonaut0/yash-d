@@ -13,6 +13,5 @@ export async function addTile(params: any) {
       ...params
     })
 
-  console.log('LA TILE DIO PORCO', data)
   return data
 }

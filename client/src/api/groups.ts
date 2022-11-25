@@ -12,13 +12,18 @@ export async function getGroups(params: any) {
 }
 
 export async function getGroup(params: any, id: string) {
-  const { data } = await axios.get<GroupInterface>(`${import.meta.env.VITE_SERVER_URI}/api/groups/${id}`,
-  {
-    params: {
-      ...params
-    }
-  })
-  return data
+  try{
+    const { data } = await axios.get<GroupInterface>(`${import.meta.env.VITE_SERVER_URI}/api/groups/${id}`,
+    {
+      params: {
+        ...params
+      }
+    })
+    return data
+  }
+  catch(e) {
+    console.log('NOPE',e)
+  }
 }
 
 export async function addGroup(params: any) {
@@ -35,7 +40,6 @@ export async function addGroupTile(id: string, params: any) {
     ...params
   })
 
-  console.log('sangue della madonna', data)
 
   return data
 }

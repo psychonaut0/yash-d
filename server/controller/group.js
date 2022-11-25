@@ -20,7 +20,7 @@ const getGroups = asyncHandler(async (req, res) => {
         populate: { path: 'image' }
       })
   }
-  else{
+  else {
     groups = await Group.find()
   }
 
@@ -34,21 +34,28 @@ const getGroups = asyncHandler(async (req, res) => {
  * @param {Express.Request} req
  * @param {Express.Response} res
  */
- const getGroup = asyncHandler(async (req, res) => {
-  const groups = await Group
-  .findById(req.params.id)
-  .populate({
-    path: 'tiles',
-    populate: { path: 'image' }
-  })
-
-
+const getGroup = asyncHandler(async (req, res) => {
   if (!req.params.id) {
     res.status(400);
     throw new Error("id is required to get a group. Please provide an id");
   }
 
-  res.status(200).json(groups);
+  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error("Invalid group id");
+  }
+
+  const group = await Group.findById(req.params.id).populate({
+    path: 'tiles',
+    populate: { path: 'image' }
+  })
+  
+  
+  res.status(200).json(group);
+
+
+
+
 });
 
 

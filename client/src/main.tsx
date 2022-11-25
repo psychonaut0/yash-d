@@ -30,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/group/:slug",
         element: <GroupPage />
+      },
+      {
+        path: "/settings",
+        element: <div>settings</div>
       }
     ]
   },

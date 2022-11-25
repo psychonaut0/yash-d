@@ -10,21 +10,10 @@ export default function GroupPage() {
 
   const id = String(useParams().slug)
 
-
-  const queryClient = useQueryClient()
-
   const group = useQuery({
-    queryKey: ['group'],
+    queryKey: ['group', id],
     queryFn: () => getGroup('', id)
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries(['group'])
-  }, [])
-  
-
-
-
 
   const [edit, setEdit] = useAtom(editMode)
 

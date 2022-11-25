@@ -5,7 +5,11 @@ type Props = {
 }
 
 export default function Tile({data}: Props) {
-  console.log(data)
+  
+  const lengthLimit = 18
+
+  const isLimited = data.description ? data.description?.length >= lengthLimit : false
+  
   return (
     <a href={data.localUrl} target="_blank" className="relative group active:translate-y-1 transition-all active:opacity-50">
       <div className="w-full h-full scale-0 duration-75 group-hover:scale-100 transition-all absolute bg-primary translate-x-0 rounded-xl blur-lg opacity-80" />
@@ -22,8 +26,12 @@ export default function Tile({data}: Props) {
         }
         <h3 className="font-accent font-semibold text-primary-600 text-center text-xl">{data.title}</h3>
         <div className="overflow-hidden w-full relative">
-        <div className="absolute right-0 h-full w-10 bg-gradient-to-l from-dark-900" />
-        <p className="text-center whitespace-nowrap  group-hover:animate-marquee">
+        {
+          isLimited && (
+            <div className="absolute right-0 h-full w-10 bg-gradient-to-l from-dark-900" />
+          )
+        }
+        <p className={`text-center whitespace-nowrap  ${isLimited && "group-hover:animate-marquee"}`}>
           {data.description}
         </p>
         </div>

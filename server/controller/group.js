@@ -10,12 +10,43 @@ const Group = require("../models/group")
  * @param {Express.Response} res
  */
 const getGroups = asyncHandler(async (req, res) => {
+  let groups = [];
+
+  if (req.query.extended === 'true') {
+    groups = await Group
+      .find()
+      .populate({
+        path: 'tiles',
+        populate: { path: 'image' }
+      })
+  }
+  else{
+    groups = await Group.find()
+  }
+
+  res.status(200).json(groups);
+});
+
+/**
+ * - Method GET
+ * - Retrieve a group
+ * @function getGroups
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ */
+ const getGroup = asyncHandler(async (req, res) => {
   const groups = await Group
-  .find()
+  .findById(req.params.id)
   .populate({
     path: 'tiles',
     populate: { path: 'image' }
-  });
+  })
+
+
+  if (!req.params.id) {
+    res.status(400);
+    throw new Error("id is required to get a group. Please provide an id");
+  }
 
   res.status(200).json(groups);
 });
@@ -84,7 +115,7 @@ const addTileToGroup = asyncHandler(async (req, res) => {
     throw new Error("Group not found!");
   }
 
-  if(!req.body.tileId){
+  if (!req.body.tileId) {
     res.status(400);
     throw new Error("No field 'tileId' provided, please provide a tileId!");
   }
@@ -120,6 +151,7 @@ const deleteGroup = asyncHandler(async (req, res) => {
 
 module.exports = {
   getGroups,
+  getGroup,
   setGroup,
   updateGroup,
   deleteGroup,

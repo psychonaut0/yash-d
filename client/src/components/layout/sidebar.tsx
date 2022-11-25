@@ -1,18 +1,52 @@
-import { FiHome, FiSettings } from "react-icons/fi";
+import { useState } from "react";
+import { FiFolder, FiHome, FiSettings } from "react-icons/fi";
+import { Link, useLocation, useMatch } from "react-router-dom";
+import { GroupInterface } from "../../interfaces/api";
 
+type Props = {
+  groups: GroupInterface[] | undefined
+}
 
-export default function Sidebar() {
+function Curves() {
   return (
-    <aside className="hidden pl-4 pt-16 md:flex flex-col items-center space-y-2">
-      <div className="relative z-10 left-[2px] text-primary py-6 pl-4 pr-10 bg-dark-800  border-2 border-r-0 border-dark-600 rounded-l-3xl">
-        <span className="w-10 h-10 absolute bg-dark-800 overflow-hidden -right-0 -top-10 before:absolute before:content-['-'] before:right-0 before:bottom-0 before:w-[200%] before:h-[200%] before:bg-dark before:border-2 before:border-dark-600 before:rounded-[25%] pointer-events-none" />
-        <span className="w-10 h-10 absolute bg-dark-800 overflow-hidden -right-0 -bottom-10 before:absolute before:content-['-'] before:right-0 before:top-0 before:w-[200%] before:h-[200%] before:bg-dark before:border-2 before:border-dark-600 before:rounded-[25%] pointer-events-none" />
-        <FiHome className="absolute blur-sm" size={'1.5rem'} />
+    <>
+      <span className="w-10 h-10 absolute bg-dark-800 overflow-hidden -right-0 -top-10 before:absolute before:content-['-'] before:right-0 before:bottom-0 before:w-[200%] before:h-[200%] before:bg-dark before:border-2 before:border-dark-600 before:rounded-[25%] pointer-events-none" />
+      <span className="w-10 h-10 absolute bg-dark-800 overflow-hidden -right-0 -bottom-10 before:absolute before:content-['-'] before:right-0 before:top-0 before:w-[200%] before:h-[200%] before:bg-dark before:border-2 before:border-dark-600 before:rounded-[25%] pointer-events-none" />
+    </>
+  )
+}
+
+export default function Sidebar({ groups }: Props) {
+
+  const location = useLocation().pathname
+
+  const activeClasses = "text-primary bg-dark-800 border-2 border-r-0 border-dark-600"
+  const inactiveClasses = "border-transparent"
+  const defaultClasses = "left-[2px] relative z-10 py-6 pl-4 border-2 border-r-0 pr-10 rounded-l-3xl flex group"
+
+  return (
+    <aside className="hidden pl-4 pt-16 md:flex flex-col items-center space-y-2 text-light">
+      <Link to={'/'} className={`${location === '/' ? activeClasses : inactiveClasses} ${defaultClasses}`}>
+        {location === '/' && <Curves />}
+        <FiHome className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
         <FiHome className="relative z-10 cursor-pointer" size={'1.5rem'} />
+      </Link>
+      <div className="flex flex-col items-center space-y-2 py-10">
+        {
+          groups?.map((group, i) => {
+            return <Link to={`/group/${group._id}`} className={`${location === `/group/${group._id}` ? activeClasses : inactiveClasses} ${defaultClasses}`} key={i}>
+              {location === `/group/${group._id}` && <Curves />}
+              <FiFolder className="relative z-10 cursor-pointer" size={'1.5rem'} />
+              <FiFolder className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
+            </Link>
+          })
+        }
       </div>
-      <div className="relative z-10 left-[2px] text-light py-6 pl-4 pr-10 rounded-l-3xl">
-        <FiSettings size={'1.5rem'} />
-      </div>
+      <Link to={'/settings'} className={`${location === '/settings' ? activeClasses : inactiveClasses} ${defaultClasses}`}>
+        {location === `/settings` && <Curves />}
+        <FiSettings className="relative z-10 cursor-pointer" size={'1.5rem'} />
+        <FiSettings className="absolute group-hover:blur-sm transition-all"  size={'1.5rem'} />
+      </Link>
     </aside>
   )
 }

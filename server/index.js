@@ -15,8 +15,8 @@ const connectDB = require("./config/db");
 connectDB();
 
 // General middlewares
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cors({origin: process.env.CLIENT_URI}))
 
 

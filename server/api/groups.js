@@ -5,11 +5,12 @@ const {
   setGroup,
   updateGroup,
   deleteGroup,
-  addTileToGroup
+  addTileToGroup,
+  getGroup
 } = require('../controller/group')
 
 router.route('/').get(getGroups).post(setGroup)
-router.route('/:id').put(updateGroup).delete(deleteGroup)
+router.route('/:id').get(getGroup).put(updateGroup).delete(deleteGroup)
 router.route('/:id/tile').put(addTileToGroup)
 
 module.exports = router

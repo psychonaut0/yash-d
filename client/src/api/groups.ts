@@ -1,8 +1,23 @@
 import axios from "axios"
 import { GroupInterface } from "../interfaces/api"
 
-export async function getGroups() {
-  const { data } = await axios.get<GroupInterface[]>(`${import.meta.env.VITE_SERVER_URI}/api/groups`)
+export async function getGroups(params: any) {
+  const { data } = await axios.get<GroupInterface[]>(`${import.meta.env.VITE_SERVER_URI}/api/groups`,
+  {
+    params: {
+      ...params
+    }
+  })
+  return data
+}
+
+export async function getGroup(params: any, id: string) {
+  const { data } = await axios.get<GroupInterface>(`${import.meta.env.VITE_SERVER_URI}/api/groups/${id}`,
+  {
+    params: {
+      ...params
+    }
+  })
   return data
 }
 

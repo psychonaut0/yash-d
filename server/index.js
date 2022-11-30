@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require('fs')
 const path = require('path');
 const cors = require('cors')
+const passport = require("passport");
 
 require("dotenv").config();
 require("colors");
@@ -23,6 +24,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({origin: process.env.CLIENT_URI}))
 
+
+// Initialize passport
+require('./config/passport')
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 // Get all endpoint routes in /api

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 
 const passport = require('passport')
 const User = require('../models/user')
+const { validatePassword } = require('../utils/password')
 const LocalStrategy = require('passport-local').Strategy
 
 passport.use(
@@ -15,7 +16,7 @@ passport.use(
             return done(null, false)
           }
 
-          const isValid = true //password validation
+          const isValid = validatePassword(password, user.hash, user.salt)
 
           if (isValid) {
             return done(null, user)

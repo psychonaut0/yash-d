@@ -19,6 +19,8 @@
     "moment": "^2.29.4",
     "mongoose": "^6.7.3",
     "multer": "^1.4.5-lts.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "redis": "^4.5.1"
   },
   "devDependencies": {

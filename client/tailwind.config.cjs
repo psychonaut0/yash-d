@@ -6,7 +6,7 @@ module.exports = {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         primary: ["Inter", "sans-serif"],
-        accent: ["Space Grotesk", "sans-serif"],
+        accent: ["Inter", "sans-serif"],
         mono: ["Fragment Mono", "monospace"],
       },
       colors: {

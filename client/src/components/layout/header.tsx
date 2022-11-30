@@ -38,8 +38,8 @@ export default function Header() {
       {
         opacity !== 0 ?
           <header style={{ opacity: opacity }} className="w-full py-8 flex justify-between px-10 fixed top-0">
-            <h1 className="text-4xl font-bold font-accent">
-              Welcome back, <span className="text-primary">{name}</span>
+            <h1 className="text-4xl font-regular font-accent">
+              Welcome back, <span className="text-primary font-bold">{name}</span>
             </h1>
             <div onClick={() => { setEdit(!edit) }} className="cursor-pointer relative group">
               {

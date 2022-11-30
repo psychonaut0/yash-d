@@ -27,7 +27,7 @@ export default function GroupPage() {
     <>
       {
         !group.data ?
-          <div className="w-full h-full flex flex-col text-8xl space-y-10 opacity-50 justify-center items-center"><div>No groups here</div><BiSad size={'6rem'} /></div>
+          <div className="w-full h-full flex flex-col text-8xl space-y-10 opacity-50 justify-center items-center"><div>No group here</div><BiSad size={'6rem'} /></div>
           :
           <div className="w-full flex flex-col justify-center items-center space-y-10">
             <div className="w-full flex flex-col space-y-6">

@@ -7,17 +7,22 @@ require("dotenv").config();
 require("colors");
 
 const { errorHandler } = require("./middleware/errors");
+const { redisSession } = require("./config/session");
 
 const app = express();
 
 // Connect to MongoDB using mongoose
-const connectDB = require("./config/db");
-connectDB();
+const { connectMongo } = require("./config/db");
+connectMongo();
+
+// Connect to Redis and create a session
+app.use(redisSession())
 
 // General middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({origin: process.env.CLIENT_URI}))
+
 
 
 // Get all endpoint routes in /api

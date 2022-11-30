@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { createClient } = require("redis");
 
 /**
  * Create connection to mongoDB database with mongoose.
@@ -6,7 +7,7 @@ const mongoose = require("mongoose");
  * 
  * @function connectDB async
  */
-const connectDB = async () => {
+const connectMongo = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB connected: ${conn.connection.host}`.cyan.underline);
@@ -16,4 +17,7 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+
+module.exports = {
+  connectMongo,
+};

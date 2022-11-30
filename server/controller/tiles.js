@@ -13,8 +13,6 @@ const Image = require("../models/image")
 const getTiles = asyncHandler(async (req, res) => {
   const tiles = await Tile.find().populate('image');
 
-  
-
   res.status(200).json(tiles);
 });
 
@@ -33,6 +31,7 @@ const setTile = asyncHandler(async (req, res) => {
   }
 
   
+
 
   if(req.body.image !== ""){
     const image = await Image.findById(req.body.image)

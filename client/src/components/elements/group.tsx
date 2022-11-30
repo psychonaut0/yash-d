@@ -1,7 +1,7 @@
 import Tile from "./tile";
 import { FaArrowRight } from 'react-icons/fa';
 import { GroupInterface } from "../../interfaces/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiPlus, BiTrashAlt } from 'react-icons/bi';
 import RemoveGroupDialog from "./dialogs/removeGroup";
 import { useAtom } from "jotai";
@@ -16,10 +16,12 @@ export default function Group({ data }: Props) {
 
 
 
-
   const [edit, setEdit] = useAtom(editMode)
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
+
+  
+  
 
   return (
     <>

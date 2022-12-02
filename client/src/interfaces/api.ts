@@ -26,3 +26,9 @@
     description?: string,
     tiles?: [TileInterface]
   }
+
+  export interface UserInterface extends ApiModelInterface {
+    username: string,
+    hash: string,
+    salt: string
+  }

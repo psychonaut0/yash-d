@@ -12,6 +12,7 @@ import Home from './pages/homepage'
 import NotFound from './pages/404'
 import Layout from './components/layout'
 import GroupPage from './pages/group'
+import Login from './pages/login';
 
 
 const queryClient = new QueryClient
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <div>settings</div>
+      },
+      {
+        path: "/login",
+        element: <Login />
       }
     ]
   },

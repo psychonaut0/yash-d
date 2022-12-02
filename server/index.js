@@ -31,6 +31,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
+
+
 // Get all endpoint routes in /api
 fs.readdirSync(path.join(__dirname, 'api')).forEach(file => {
   let endpoint = file.substring(0, file.lastIndexOf("."))

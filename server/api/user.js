@@ -1,10 +1,11 @@
 const passport = require('passport')
-const { registerUser } = require('../controller/user')
+const { registerUser, getUser } = require('../controller/user')
 
 const router = require('express').Router()
 
+router.route('/').get(getUser)
+
 router.route('/login').post(passport.authenticate('local' ), (req, res) => {
-  console.log('allo')
   res.status(200).json(req.user)
 })
 router.route('/register').post(registerUser)

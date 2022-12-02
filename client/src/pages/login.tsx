@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { BiRightArrow, BiRightArrowAlt, BiX } from "react-icons/bi";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { login } from "../api/user";
 import { UserInterface } from "../interfaces/api";
 
@@ -13,6 +13,7 @@ interface InputValues {
 export default function Login() {
 
   const { register, handleSubmit } = useForm<InputValues>();
+  const navigate = useNavigate()
 
   const queryClient = useQueryClient()
 
@@ -35,6 +36,7 @@ export default function Login() {
 
   function submit(data: InputValues) {
     mutation.mutate(data)
+    navigate('/')
   }
   
 

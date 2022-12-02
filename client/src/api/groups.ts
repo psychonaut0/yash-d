@@ -22,7 +22,7 @@ export async function getGroup(params: any, id: string) {
     return data
   }
   catch(e) {
-    console.log('NOPE',e)
+    console.error('NOPE',e)
   }
 }
 

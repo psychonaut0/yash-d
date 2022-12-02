@@ -1,8 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BiRightArrow, BiRightArrowAlt, BiX } from "react-icons/bi";
 import { redirect, useNavigate } from "react-router-dom";
-import { login } from "../api/user";
+import { getUser, login } from "../api/user";
 import { UserInterface } from "../interfaces/api";
 
 interface InputValues {
@@ -17,6 +18,15 @@ export default function Login() {
 
   const queryClient = useQueryClient()
 
+  const user = useQuery({
+    queryFn: getUser,
+    queryKey: ['user']
+  })
+
+  console.log(user)
+
+
+
   const mutation = useMutation({
     mutationFn: (data: InputValues) => login(data),
     onMutate: async (newGroup) => {
@@ -30,14 +40,23 @@ export default function Login() {
     },
     onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ["user"] })
-    }
+    },
+    onSuccess(data, variables, context) {
+      navigate('/')
+    },
   })
 
 
   function submit(data: InputValues) {
     mutation.mutate(data)
-    navigate('/')
   }
+
+  useEffect(() => {
+    if(user.data){
+      navigate('/')
+    }
+  }, [user])
+  
   
 
   return (

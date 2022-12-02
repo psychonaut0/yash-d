@@ -14,6 +14,8 @@ const registerUser = asyncHandler(
   async (req, res, next) => {
     const encryptedPasswordData = encryptPassword(req.body.password)
 
+
+
     const user = await User.create({
       username: req.body.username,
       hash: encryptedPasswordData.hash,
@@ -31,7 +33,7 @@ const getUser = asyncHandler(
       res.status(401)
       throw new Error("You're not logged in")
     }
-    
+
     const user = await User.findById(req.session.passport.user)
     res.status(200).json(user)
   }

@@ -22,7 +22,10 @@ app.use(redisSession())
 // General middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({origin: process.env.CLIENT_URI}))
+app.use(cors({
+  origin: process.env.CLIENT_URI,
+  credentials: true
+}))
 
 
 // Initialize passport

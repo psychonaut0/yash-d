@@ -20,7 +20,6 @@ export default function GroupPage() {
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
 
-  console.log(group)
 
 
   return (

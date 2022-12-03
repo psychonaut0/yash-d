@@ -14,9 +14,9 @@ const redisSession =  () => {
   console.log(`Redis connected`.cyan.underline)
 
   return session({
+    secret: `${process.env.SESSION_SECRET}`,
     store:  new RedisStore({client: client}),
     saveUninitialized: true,
-    secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24

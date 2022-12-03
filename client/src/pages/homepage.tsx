@@ -4,6 +4,7 @@ import { BiPlus } from "react-icons/bi"
 import { useLocation, useParams } from "react-router-dom"
 import { getGroups } from "../api/groups"
 import { getTiles } from "../api/tiles"
+import { getUser } from "../api/user"
 import Tile from "../components/elements/tile"
 import Layout from "../components/layout"
 import { dialogType, editMode } from "../state"
@@ -18,6 +19,12 @@ export default function Home() {
     queryKey: ['tiles'],
     queryFn: getTiles
   })
+
+  const user = useQuery({
+    queryFn: getUser,
+    queryKey: ['user']
+  })
+
 
 
 

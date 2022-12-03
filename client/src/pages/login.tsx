@@ -23,9 +23,6 @@ export default function Login() {
     queryKey: ['user']
   })
 
-  console.log(user)
-
-
 
   const mutation = useMutation({
     mutationFn: (data: InputValues) => login(data),

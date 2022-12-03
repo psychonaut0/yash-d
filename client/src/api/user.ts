@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios"
+import { UserInterface } from "../interfaces/api"
 
 
 export async function login(params: any) {
@@ -20,7 +21,7 @@ export async function login(params: any) {
 
 export async function getUser() {
   try {
-    const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/user/`, {withCredentials: true})
+    const { data }: { data: UserInterface } = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/user/`, { withCredentials: true })
     return data
   }
   catch (err) {

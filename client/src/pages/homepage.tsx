@@ -21,11 +21,7 @@ export default function Home() {
     queryFn: getTiles
   })
 
-  const user = useQuery({
-    queryFn: getUser,
-    queryKey: ['user']
-  })
-
+ 
 
 
 

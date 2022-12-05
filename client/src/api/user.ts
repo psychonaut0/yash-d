@@ -19,6 +19,20 @@ export async function login(params: any) {
   }
 }
 
+export async function logout() {
+  try {
+    const { data }: { data: any } = await axios.post(`${import.meta.env.VITE_SERVER_URI}/api/user/logout`,
+      {},
+      { withCredentials: true }
+    )
+    console.log(data)
+    return null
+  }
+  catch (err) {
+    return false
+  }
+}
+
 export async function getUser() {
   try {
     const { data }: { data: UserInterface } = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/user/`, { withCredentials: true })

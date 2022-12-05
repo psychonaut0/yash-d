@@ -24,6 +24,8 @@ export default function Layout({ children }: Props) {
   })
 
 
+  console.log(user.data)
+
   return (
     <>
       <Dialog />

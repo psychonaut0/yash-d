@@ -51,21 +51,6 @@ export default function Header({ user }: { user: UserInterface | Boolean | undef
             </h1>
             {
               user ?
-                // <div onClick={() => { setEdit(!edit) }} className="cursor-pointer relative group">
-                //   {
-
-                //     !edit ?
-                //       <>
-                //         <BiEdit className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
-                //         <BiEdit className="text-primary relative z-10" size={"2.5rem"} />
-                //       </>
-                //       :
-                //       <>
-                //         <BiCheckSquare className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
-                //         <BiCheckSquare className="text-primary relative z-10" size={"2.5rem"} />
-                //       </>
-                //   }
-                // </div>
                 <div className="">
                   <div onClick={() => { setShowUserMenu(!showUserMenu) }} className="cursor-pointer relative group flex justify-center items-center">
                     <BiUserCircle className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />

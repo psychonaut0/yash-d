@@ -25,7 +25,7 @@ export async function getUser() {
     return data
   }
   catch (err) {
-    console.error(err)
-    return null
+    console.clear()
+    return false
   }
 }

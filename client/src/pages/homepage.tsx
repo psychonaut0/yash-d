@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useAtom } from "jotai"
 import { BiPlus } from "react-icons/bi"
-import { useLocation, useParams } from "react-router-dom"
+import { useLoaderData, useLocation, useParams } from "react-router-dom"
 import { getGroups } from "../api/groups"
 import { getTiles } from "../api/tiles"
 import { getUser } from "../api/user"
@@ -10,6 +10,7 @@ import Layout from "../components/layout"
 import { dialogType, editMode } from "../state"
 
 export default function Home() {
+
 
 
 

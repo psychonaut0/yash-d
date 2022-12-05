@@ -15,7 +15,13 @@ import GroupPage from './pages/group'
 import Login from './pages/login';
 
 
-const queryClient = new QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 10
+    }
+  }
+})
 
 
 const router = createBrowserRouter([

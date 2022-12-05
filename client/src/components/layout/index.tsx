@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom";
 import { getGroups } from "../../api/groups";
+import { getUser } from "../../api/user";
 import Dialog from "../elements/dialogs";
 import Footer from "./footer";
 import Header from "./header";
@@ -17,20 +18,29 @@ export default function Layout({ children }: Props) {
     queryFn: () => getGroups({})
   })
 
+  const user = useQuery({
+    queryFn: getUser,
+    queryKey: ['user']
+  })
+
+
   return (
     <>
-    <Dialog />
-    <div className="w-full h-full flex flex-col items-center min-h-screen bg-dark text-light">
-      <Header />
-      <div className="flex w-full h-full max-w-[1800px] relative z-20">
-        <Sidebar groups={groups.data}/>
-        <div className="w-full min-h-[700px] rounded-3xl bg-dark-800 border-dark-600 border-2 p-4 md:p-20">
-          <Outlet />
+      <Dialog />
+      <div className="w-full h-full flex flex-col items-center min-h-screen bg-dark text-light">
+        {
+          !user?.isLoading &&
+            <Header user={user.data} />
+        }
+        <div className="flex w-full h-full max-w-[1800px] relative z-20">
+          <Sidebar groups={groups.data} />
+          <div className="w-full min-h-[700px] rounded-3xl bg-dark-800 border-dark-600 border-2 p-4 md:p-20">
+            <Outlet />
+          </div>
+          <div className="md:w-10" />
         </div>
-        <div className="md:w-10" />
+        <Footer />
       </div>
-      <Footer />
-    </div>
     </>
   )
 }

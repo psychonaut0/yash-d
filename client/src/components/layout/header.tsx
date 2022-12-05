@@ -1,18 +1,21 @@
 import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
-import { BiCheck, BiCheckSquare, BiEdit, BiUser, BiUserCheck, BiUserCircle } from "react-icons/bi"
+import { BiCheck, BiCheckSquare, BiEdit, BiLogIn, BiUser, BiUserCheck, BiUserCircle } from "react-icons/bi"
 import { Link } from "react-router-dom"
 import { UserInterface } from "../../interfaces/api"
 import { editMode } from "../../state"
+import UserMenu from "./userMenu"
 
 export default function Header({ user }: { user: UserInterface | Boolean | undefined }) {
 
-  console.log(user)
 
   const [edit, setEdit] = useAtom(editMode)
 
   const [opacity, setOpacity] = useState(1.00)
 
+  const [showUserMenu, setShowUserMenu] = useState<Boolean>(false)
+
+  // Opacity Scroll handler
   function handleScrollEvent() {
     const distanceY = window.pageYOffset || document.documentElement.scrollTop
     const maxHeight = 70
@@ -22,6 +25,7 @@ export default function Header({ user }: { user: UserInterface | Boolean | undef
       setOpacity(opacityValue)
     }
     else {
+      setShowUserMenu(false)
       setOpacity(0)
     }
   }
@@ -41,31 +45,43 @@ export default function Header({ user }: { user: UserInterface | Boolean | undef
       <div className="h-32" />
       {
         opacity !== 0 ?
-          <header style={{ opacity: opacity }} className="w-full py-8 flex justify-between px-10 fixed top-0">
+          <header style={{ opacity: opacity }} className="w-full py-8 flex justify-between px-10 fixed top-0 z-50">
             <h1 className="text-4xl font-regular font-accent">
               Welcome{`${user ? ' back' : ''}`}, <span className="text-primary font-bold">{`${user ? name : 'Visitor'}`}</span>
             </h1>
             {
               user ?
-                <div onClick={() => { setEdit(!edit) }} className="cursor-pointer relative group">
-                  {
+                // <div onClick={() => { setEdit(!edit) }} className="cursor-pointer relative group">
+                //   {
 
-                    !edit ?
-                      <>
-                        <BiEdit className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
-                        <BiEdit className="text-primary relative z-10" size={"2.5rem"} />
-                      </>
+                //     !edit ?
+                //       <>
+                //         <BiEdit className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
+                //         <BiEdit className="text-primary relative z-10" size={"2.5rem"} />
+                //       </>
+                //       :
+                //       <>
+                //         <BiCheckSquare className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
+                //         <BiCheckSquare className="text-primary relative z-10" size={"2.5rem"} />
+                //       </>
+                //   }
+                // </div>
+                <div className="">
+                  <div onClick={() => { setShowUserMenu(!showUserMenu) }} className="cursor-pointer relative group flex justify-center items-center">
+                    <BiUserCircle className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
+                    <BiUserCircle className="text-primary relative z-10" size={"2.5rem"} />
+                  </div>
+                  {
+                    showUserMenu ?
+                      <UserMenu setter={setShowUserMenu} />
                       :
-                      <>
-                        <BiCheckSquare className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
-                        <BiCheckSquare className="text-primary relative z-10" size={"2.5rem"} />
-                      </>
+                      null
                   }
                 </div>
                 :
                 <Link className="cursor-pointer relative group" to={"/login"}>
-                  <BiUserCircle className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
-                  <BiUserCircle className="text-primary relative z-10" size={"2.5rem"} />
+                  <BiLogIn className="text-primary absolute group-hover:blur-sm transition-all" size={"2.5rem"} />
+                  <BiLogIn className="text-primary relative z-10" size={"2.5rem"} />
                 </Link>
             }
           </header>

@@ -25,7 +25,6 @@ export async function logout() {
       {},
       { withCredentials: true }
     )
-    console.log(data)
     return null
   }
   catch (err) {

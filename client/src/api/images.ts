@@ -18,6 +18,5 @@ export async function addImage(params: any) {
       },
     }
   )
-  console.log('AO',formData)
   return data
 }

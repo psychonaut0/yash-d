@@ -1,10 +1,10 @@
-import DialogLayout from "./layout";
+import DialogLayout from "../layout";
 import { BiX, BiTrashAlt } from "react-icons/bi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeGroup } from "../../../api/groups";
-import { GroupInterface } from "../../../interfaces/api";
+import { removeGroup } from "../../../../../api/groups";
+import { GroupInterface } from "../../../../../interfaces/api";
 import { useAtom } from "jotai";
-import { dialogType } from "../../../state";
+import { dialogType } from "../../../../../state";
 
 
 type Props = {

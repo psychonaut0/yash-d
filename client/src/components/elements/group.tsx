@@ -3,7 +3,6 @@ import { FaArrowRight } from 'react-icons/fa';
 import { GroupInterface } from "../../interfaces/api";
 import { useEffect, useState } from "react";
 import { BiPlus, BiTrashAlt } from 'react-icons/bi';
-import RemoveGroupDialog from "./dialogs/removeGroup";
 import { useAtom } from "jotai";
 import { dialogType, editMode } from "../../state";
 

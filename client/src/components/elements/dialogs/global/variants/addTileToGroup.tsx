@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { BiRightArrowAlt, BiX } from "react-icons/bi";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { addGroupTile } from "../../../api/groups";
-import { addImage, getImages } from "../../../api/images";
-import { addTile } from "../../../api/tiles";
-import { GroupInterface, ImageInterface, TileInterface } from "../../../interfaces/api";
-import { dialogType } from "../../../state";
-import DialogLayout from "./layout";
+import { addGroupTile } from "../../../../../api/groups";
+import { addImage, getImages } from "../../../../../api/images";
+import { addTile } from "../../../../../api/tiles";
+import { GroupInterface, ImageInterface, TileInterface } from "../../../../../interfaces/api";
+import { dialogType } from "../../../../../state";
+import DialogLayout from "../layout";
 
 
 interface InputValues {

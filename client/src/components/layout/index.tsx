@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom";
 import { getGroups } from "../../api/groups";
 import { getUser } from "../../api/user";
-import Dialog from "../elements/dialogs";
+import Dialog from "../elements/dialogs/global";
 import Footer from "./footer";
 import Header from "./header";
 import Sidebar from "./sidebar";

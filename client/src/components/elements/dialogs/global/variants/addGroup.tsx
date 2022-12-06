@@ -1,11 +1,11 @@
-import DialogLayout from "./layout";
+import DialogLayout from "../layout";
 import { BiX, BiRightArrowAlt } from "react-icons/bi";
 import { useForm, FieldValues } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addGroup } from "../../../api/groups";
-import { GroupInterface } from "../../../interfaces/api";
+import { addGroup } from "../../../../../api/groups";
+import { GroupInterface } from "../../../../../interfaces/api";
 import { useAtom } from "jotai";
-import { dialogType } from "../../../state";
+import { dialogType } from "../../../../../state";
 
 
 

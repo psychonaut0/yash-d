@@ -1,15 +1,15 @@
-import DialogLayout from "./layout";
+import DialogLayout from "../layout";
 import { BiX, BiRightArrowAlt } from "react-icons/bi";
 import { useForm, FieldValues } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addGroup } from "../../../api/groups";
-import { GroupInterface, ImageInterface } from "../../../interfaces/api";
+import { addGroup } from "../../../../../api/groups";
+import { GroupInterface, ImageInterface } from "../../../../../interfaces/api";
 import { useAtom } from "jotai";
-import { dialogType } from "../../../state";
-import { addTile } from "../../../api/tiles";
+import { dialogType } from "../../../../../state";
+import { addTile } from "../../../../../api/tiles";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { useState } from "react";
-import { addImage, getImages } from "../../../api/images";
+import { addImage, getImages } from "../../../../../api/images";
 
 
 interface InputValues {

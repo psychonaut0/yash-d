@@ -39,7 +39,7 @@ export default function Home() {
                 <div>loading...</div>
                 :
                 tiles.data.map((tile, i) => {
-                  return <Tile key={i} data={tile} />
+                  return <Tile index={i}  key={i} data={tile} />
                 })
             }
             {

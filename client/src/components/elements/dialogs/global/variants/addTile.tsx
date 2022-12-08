@@ -143,7 +143,7 @@ export default function AddTileDialog() {
               <div className="h-36 w-[600px] overflow-y-auto grid grid-cols-4 gap-6 px-4">
                 {
                   images.data?.map((image, i) => {
-                    return <div onClick={() => { handleImageChange(i) }} className={`transition-all ${selectedImage === i ? "border-primary border-2" : "border-light border-2"} cursor-pointer w-32 h-32 flex justify-center items-center p-1 border-primary border rounded-md`} key={i}>
+                    return <div onClick={() => { handleImageChange(i) }} className={`transition-all ${selectedImage === i ? "border-primary border-2" : "border-light border-2"} cursor-pointer w-32 h-32 flex justify-center items-center p-1 rounded-md`} key={i}>
                       <img className="object-contain " src={image.sourceUrl} />
                     </div>
                   })

@@ -18,7 +18,9 @@ type Props = {
 export default function RemoveTileDialog({ id, groupId }: Props) {
   const queryClient = useQueryClient()
 
-  console.log(queryClient.getQueryData(['groups']))
+  let test = queryClient.getQueryData<GroupInterface>(['group', groupId])
+
+
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
 
@@ -26,9 +28,10 @@ export default function RemoveTileDialog({ id, groupId }: Props) {
   const mutation = useMutation({
     mutationFn: (id: string) => removeTile(id),
     onMutate: async (removedTileId) => {
-      await queryClient.cancelQueries({ queryKey: ["tiles", groupId, "group"] })
+      await queryClient.cancelQueries({ queryKey: ["tiles"] })
       let prevGroups: GroupInterface | undefined
       if (groupId) {
+        await queryClient.cancelQueries({ queryKey: ["group", groupId] })
         prevGroups = queryClient.getQueryData<GroupInterface>(["group", groupId])
         let newGroups = prevGroups
         const tileIndex: number | undefined = newGroups?.tiles?.findIndex((tile: TileInterface) => tile._id === removedTileId);
@@ -47,7 +50,9 @@ export default function RemoveTileDialog({ id, groupId }: Props) {
       return context?.prevTiles || context?.prevGroups
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["groups", "tiles"] })
+      queryClient.invalidateQueries({ queryKey: ["groups"] })
+      queryClient.invalidateQueries({ queryKey: ["group", groupId] })
+      queryClient.invalidateQueries({ queryKey: ["tiles"] })
       setShowDialog({ type: "none" })
     }
   })

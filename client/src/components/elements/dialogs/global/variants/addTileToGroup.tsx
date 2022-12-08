@@ -75,7 +75,7 @@ export default function AddTileToGroupDialog({ groupId }: Props) {
     onMutate: async (newGroup) => {
       await queryClient.cancelQueries({ queryKey: ["tiles"] })
       const prevGroup = queryClient.getQueryData<Array<TileInterface>>(["tiles"])
-      queryClient.setQueryData(["tiles"], (old: any) => [...old, newGroup] )
+      queryClient.setQueryData(["tiles"], (old: any) => old ? [...old, newGroup] : [newGroup])
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {
@@ -114,7 +114,7 @@ export default function AddTileToGroupDialog({ groupId }: Props) {
     }
     const tileData = await mutationTile.mutateAsync(updatedForm)
     await mutationGroup.mutateAsync([groupId, { tileId: tileData._id }])
-    setShowDialog({type: "none"})
+    setShowDialog({ type: "none" })
   }
 
 

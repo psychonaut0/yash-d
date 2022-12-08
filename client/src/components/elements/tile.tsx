@@ -5,19 +5,19 @@ import ContextMenuWrapper from "./dialogs/context";
 
 type Props = {
   data: TileInterface,
-  index?: number | undefined
+  index?: number | undefined,
+  groupId?: string
 }
 
-export default function Tile({ data, index }: Props) {
-
-
-
+export default function Tile({ data, index, groupId }: Props) {
   const lengthLimit = 18
+
+  let i = 0
 
   const isLimited = data.description ? data.description?.length >= lengthLimit : false
 
   return (
-    <ContextMenuWrapper>
+    <ContextMenuWrapper data={data} groupId={groupId}>
       <a tabIndex={index ? index + 1 : -1} href={data.localUrl} target="_blank" className="relative group active:translate-y-1 transition-all active:opacity-50">
         <div className="w-full h-full scale-0 duration-75 group-hover:scale-100 transition-all absolute bg-primary translate-x-0 rounded-xl blur-lg opacity-80" />
         <div className="flex transition-all group-hover:shadow-2xl w-full h-full border-2  px-6  py-4 rounded-xl border-dark-600 group-hover:border-primary  bg-dark relative z-10 flex-col items-center space-y-2 ">

@@ -16,6 +16,8 @@ export default function GroupPage() {
     queryFn: () => getGroup('', id)
   })
 
+  
+
   const [edit, setEdit] = useAtom(editMode)
 
   const [showDialog, setShowDialog] = useAtom(dialogType)

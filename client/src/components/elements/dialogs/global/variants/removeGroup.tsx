@@ -5,6 +5,7 @@ import { removeGroup } from "../../../../../api/groups";
 import { GroupInterface } from "../../../../../interfaces/api";
 import { useAtom } from "jotai";
 import { dialogType } from "../../../../../state";
+import { useNavigate } from "react-router-dom";
 
 
 type Props = {
@@ -15,6 +16,8 @@ type Props = {
 
 export default function RemoveGroupDialog({ id }: Props) {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
+
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
 
@@ -37,6 +40,7 @@ export default function RemoveGroupDialog({ id }: Props) {
     onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ["groups"] })
       setShowDialog({type: "none"})
+      navigate('/')
     }
   })
 

@@ -49,8 +49,8 @@ const getGroup = asyncHandler(async (req, res) => {
     path: 'tiles',
     populate: { path: 'image' }
   })
-  
-  
+
+
   res.status(200).json(group);
 
 
@@ -130,7 +130,10 @@ const addTileToGroup = asyncHandler(async (req, res) => {
 
   await group.save()
 
-  res.status(200).json(group);
+  res.status(200).json(await group.populate({
+    path: 'tiles',
+    populate: { path: 'image' }
+  }));
 });
 
 

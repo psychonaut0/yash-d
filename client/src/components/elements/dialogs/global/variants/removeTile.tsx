@@ -26,19 +26,14 @@ export default function RemoveTileDialog({ id, groupId }: Props) {
   const mutation = useMutation({
     mutationFn: (id: string) => removeTile(id),
     onMutate: async (removedTileId) => {
-      await queryClient.cancelQueries({ queryKey: ["groups", "tiles"] })
-      let prevGroups: GroupInterface[] | undefined = []
+      await queryClient.cancelQueries({ queryKey: ["tiles", groupId, "group"] })
+      let prevGroups: GroupInterface | undefined
       if (groupId) {
-        console.log('zan zan')
-        prevGroups = queryClient.getQueryData<Array<GroupInterface>>(["groups"])
+        prevGroups = queryClient.getQueryData<GroupInterface>(["group", groupId])
         let newGroups = prevGroups
-        const groupIndex: number | undefined = newGroups?.findIndex((group: GroupInterface) => group._id === groupId)
-        console.log('ok', groupIndex);
-        const tileIndex: number | undefined = groupIndex && newGroups?.[groupIndex].tiles?.findIndex((tile: TileInterface) => tile._id === removedTileId);
-        console.log('ok 2', tileIndex);
-        (tileIndex && groupIndex) && newGroups?.[groupIndex].tiles?.splice(tileIndex, 1);
-        console.log('ALMOST',newGroups);
-        queryClient.setQueryData(["groups"], newGroups)
+        const tileIndex: number | undefined = newGroups?.tiles?.findIndex((tile: TileInterface) => tile._id === removedTileId);
+        (tileIndex) && newGroups?.tiles?.splice(tileIndex, 1);
+        queryClient.setQueryData(["group", groupId], newGroups)
       }
       const prevTiles = queryClient.getQueryData<Array<TileInterface>>(["tiles"])
       let newTiles = prevTiles

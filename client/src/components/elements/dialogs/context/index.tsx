@@ -13,7 +13,6 @@ type Props = {
 }
 
 export default function ContextMenuWrapper({ data, groupId, children }: Props) {
-  console.log(groupId)
 
 
   const [anchorPoint, setAnchorPoint] = useState<{ x: number, y: number }>({ x: 0, y: 0 })

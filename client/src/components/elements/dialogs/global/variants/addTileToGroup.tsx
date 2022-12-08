@@ -90,17 +90,17 @@ export default function AddTileToGroupDialog({ groupId }: Props) {
   const mutationGroup = useMutation({
     mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1]),
     onMutate: async (newGroup) => {
-      await queryClient.cancelQueries({ queryKey: ["groups"] })
-      const prevGroup = queryClient.getQueryData<Array<GroupInterface>>(["groups"])
-      queryClient.setQueryData(["groups"], (old: any) => [...old, newGroup])
+      await queryClient.cancelQueries({ queryKey: ["group", groupId] })
+      const prevGroup = queryClient.getQueryData<GroupInterface>(["group", groupId])
+      queryClient.setQueryData(["group", groupId], newGroup)
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {
       console.error(err);
-      queryClient.setQueryData(["groups"], context?.prevGroup)
+      queryClient.setQueryData(["group", groupId], context?.prevGroup)
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["groups"] })
+      queryClient.invalidateQueries({ queryKey: ["group", groupId] })
     }
   })
 

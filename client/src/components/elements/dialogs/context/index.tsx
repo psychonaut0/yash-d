@@ -23,7 +23,7 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
   const groups: [GroupInterface] | undefined = queryClient.getQueryData(['groups'])
 
 
-
+  console.log('MANAGGIALAMADONNA', groups)
 
   const [anchorPoint, setAnchorPoint] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
   const [menuProps, toggleMenu] = useMenuState()
@@ -36,7 +36,6 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
       queryClient.invalidateQueries({ queryKey: ["group", data._id] })
     }
   })
-
 
   const itemClassNames = `flex items-center w-full cursor-pointer transition-all hover:bg-dark-800 hover:text-primary px-4 first-of-type:rounded-t-md last:rounded-b-md border-b border-light border-opacity-10 border-t py-2 first-of-type:border-transparent last:border-transparent first:border-b-transparent`
 
@@ -72,7 +71,7 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
           )
         }
         {
-          (groups && groups.length > 0) && (
+          ((groups && (groups.length > 0))) && (
             <SubMenu
               menuClassName={"w-max z-50 bg-dark-600 rounded-md flex flex-col border border-light border-opacity-10"}
               className={`${itemClassNames}`}
@@ -87,13 +86,14 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
               }}>
               {
                 groups.map((group, i) => {
-                  return <MenuItem onClick={() => {mutationGroup.mutate([group._id, { tileId: data._id }])}} key={i} className={`${itemClassNames} text-light`}>
-                    <BiFolder className="pr-2" size={'1.6rem'} />
-                    <p>
-                      {group.title}
-                    </p>
-                  </MenuItem>
-
+                  if ((group.tiles as string[])?.find((tile: string) => tile === data._id) === undefined) {
+                    return <MenuItem onClick={() => { mutationGroup.mutate([group._id, { tileId: data._id }]) }} key={i} className={`${itemClassNames} text-light`}>
+                      <BiFolder className="pr-2" size={'1.6rem'} />
+                      <p>
+                        {group.title}
+                      </p>
+                    </MenuItem>
+                  }
                 })
               }
             </SubMenu>

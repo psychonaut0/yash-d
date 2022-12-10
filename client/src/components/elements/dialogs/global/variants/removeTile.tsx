@@ -34,7 +34,7 @@ export default function RemoveTileDialog({ id, groupId }: Props) {
         await queryClient.cancelQueries({ queryKey: ["group", groupId] })
         prevGroups = queryClient.getQueryData<GroupInterface>(["group", groupId])
         let newGroups = prevGroups
-        const tileIndex: number | undefined = newGroups?.tiles?.findIndex((tile: TileInterface) => tile._id === removedTileId);
+        const tileIndex: number | undefined = (newGroups?.tiles as TileInterface[])?.findIndex((tile: TileInterface) => tile._id === removedTileId);
         (tileIndex) && newGroups?.tiles?.splice(tileIndex, 1);
         queryClient.setQueryData(["group", groupId], newGroups)
       }

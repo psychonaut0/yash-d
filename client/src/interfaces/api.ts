@@ -24,7 +24,7 @@
   export interface GroupInterface extends ApiModelInterface {
     title: string,
     description?: string,
-    tiles?: [TileInterface]
+    tiles?: [TileInterface] | [string]
   }
 
   export interface UserInterface extends ApiModelInterface {

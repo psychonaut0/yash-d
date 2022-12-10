@@ -1,5 +1,4 @@
 # ヤシ - D
----
 
 ## ⚠️ WARNING ⚠️
 This Project is still in heavy developements, so bugs are expected.

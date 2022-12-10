@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BiPlus, BiTrashAlt } from 'react-icons/bi';
 import { useAtom } from "jotai";
 import { dialogType, editMode } from "../../state";
+import { useQuery } from "@tanstack/react-query";
 
 
 type Props = {
@@ -16,12 +17,15 @@ export default function Group({ data }: Props) {
 
 
 
+
+
+
   const [edit, setEdit] = useAtom(editMode)
 
   const [showDialog, setShowDialog] = useAtom(dialogType)
 
-  
-  
+
+
 
   return (
     <>
@@ -45,7 +49,7 @@ export default function Group({ data }: Props) {
         <div className="w-full min-h-[200px] grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 sm:gap-4  md:gap-5 lg:gap-8 xl:gap-9 2xl:gap-10 px-6">
           {
             data.tiles?.map((tile, i) => {
-              return <Tile index={i} key={i} data={tile} groupId={data._id}/>
+              return <Tile index={i} key={i} data={tile} groupId={data._id} />
             })
           }
           {

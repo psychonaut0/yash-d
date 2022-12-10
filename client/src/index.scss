@@ -23,3 +23,7 @@
 .react-tabs__tab-panel--selected {
   @apply py-4 px-2 relative z-10 rounded-md rounded-tl-none bg-dark-600 border-2 border-primary #{!important};
 }
+
+.ya-disabled {
+  @apply opacity-20 pointer-events-none cursor-wait #{!important};
+}

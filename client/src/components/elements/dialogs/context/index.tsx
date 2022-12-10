@@ -86,14 +86,13 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
               }}>
               {
                 groups.map((group, i) => {
-                  if ((group.tiles as string[])?.find((tile: string) => tile === data._id) === undefined) {
-                    return <MenuItem onClick={() => { mutationGroup.mutate([group._id, { tileId: data._id }]) }} key={i} className={`${itemClassNames} text-light`}>
-                      <BiFolder className="pr-2" size={'1.6rem'} />
-                      <p>
-                        {group.title}
-                      </p>
-                    </MenuItem>
-                  }
+                  const check = (group.tiles as string[])?.find((tile: string) => tile === data._id) === undefined
+                  return <MenuItem onClick={() => { mutationGroup.mutate([group._id, { tileId: data._id }]) }} key={i} className={`${itemClassNames} text-light ${!check ? 'ya-disabled' : ''}`}>
+                    <BiFolder className="pr-2" size={'1.6rem'} />
+                    <p>
+                      {group.title}
+                    </p>
+                  </MenuItem>
                 })
               }
             </SubMenu>

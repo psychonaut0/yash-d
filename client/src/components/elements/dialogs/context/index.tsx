@@ -22,9 +22,6 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
 
   const groups: [GroupInterface] | undefined = queryClient.getQueryData(['groups'])
 
-
-  console.log('MANAGGIALAMADONNA', groups)
-
   const [anchorPoint, setAnchorPoint] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
   const [menuProps, toggleMenu] = useMenuState()
 
@@ -34,6 +31,7 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
     mutationFn: (data: [string, any]) => addGroupTile(data[0], data[1]),
     onSuccess: (data: GroupInterface) => {
       queryClient.invalidateQueries({ queryKey: ["group", data._id] })
+      queryClient.invalidateQueries({ queryKey: ["groups"] })
     }
   })
 
@@ -98,7 +96,7 @@ export default function ContextMenuWrapper({ data, groupId, children }: Props) {
             </SubMenu>
           )
         }
-        <MenuItem className={`${itemClassNames}`}>
+        <MenuItem onClick={() => { setShowDialog({ type: "edit-tile", tileId: data._id }) }} className={`${itemClassNames}`}>
           <BiEdit className="pr-2" size={"1.6rem"} />
           Edit
         </MenuItem>

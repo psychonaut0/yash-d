@@ -16,6 +16,17 @@ export async function addTile(params: any) {
   return data
 }
 
+export async function editTile(params: any, id: string) {
+  const { data } = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/tiles/${id}`,
+    {
+      ...params
+    }
+
+  )
+
+  return data
+}
+
 
 export async function removeTile(id: string) {
   const { data } = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/tiles/${id}`)

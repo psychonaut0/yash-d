@@ -51,7 +51,7 @@ export default function RemoveTileDialog({ id, groupId }: Props) {
     },
     onSettled: (data) => {
       queryClient.invalidateQueries({ queryKey: ["groups"] })
-      queryClient.invalidateQueries({ queryKey: ["group", groupId] })
+      queryClient.invalidateQueries({ queryKey: ["group"] })
       queryClient.invalidateQueries({ queryKey: ["tiles"] })
       setShowDialog({ type: "none" })
     }

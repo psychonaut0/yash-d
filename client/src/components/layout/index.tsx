@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Outlet } from "react-router-dom";
+import { CiWarning } from "react-icons/ci";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { getGroups } from "../../api/groups";
 import { getUser } from "../../api/user";
 import Dialog from "../elements/dialogs/global";
@@ -24,6 +25,12 @@ export default function Layout({ children }: Props) {
   })
 
 
+  const location = useLocation().pathname
+
+
+  const allowedPaths = [
+    '/login'
+  ]
 
   return (
     <>
@@ -34,14 +41,19 @@ export default function Layout({ children }: Props) {
           <Header user={user.data} />
         }
         <div className="flex w-full h-full max-w-[1800px] relative z-20">
-          <Sidebar groups={groups.data} />
+          <Sidebar user={user.data} groups={groups.data} />
           <div className="w-full min-h-[700px] rounded-3xl bg-dark-800 border-dark-600 border-2 p-4 md:p-20">
-            {/* <div className="fixed   -left-48 w-screen h-screen bg-transparent pointer-events-none font-bold text-[600px] flex text-primary opacity-5 ">
-              <span className="whitespace-nowrap">
-                ヤシダイ
-              </span>
-            </div> */}
-            <Outlet />
+            {
+              user.data || allowedPaths.includes(location) ?
+                <Outlet />
+                :
+                <div className="flex flex-col space-y-10 w-full h-full justify-center items-center text-3xl opacity-80">
+                  <CiWarning className="py-10" size={'14rem'} />
+                  <p>
+                    Hey, i don't know you! Please <Link to={'/login'} className="transition-all text-primary hover:text-primary-600 hover:underline"> login </Link>  to view the content!
+                  </p>
+                </div>
+            }
           </div>
           <div className="md:w-10" />
         </div>

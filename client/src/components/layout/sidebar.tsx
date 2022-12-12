@@ -3,11 +3,12 @@ import { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FiFolder, FiHome, FiPlus, FiPlusCircle, FiPlusSquare, FiSettings } from "react-icons/fi";
 import { Link, useLocation, useMatch } from "react-router-dom";
-import { GroupInterface } from "../../interfaces/api";
+import { GroupInterface, UserInterface } from "../../interfaces/api";
 import { dialogType, editMode } from "../../state";
 
 type Props = {
   groups: GroupInterface[] | undefined
+  user: UserInterface | Boolean | undefined
 }
 
 function Curves() {
@@ -19,7 +20,7 @@ function Curves() {
   )
 }
 
-export default function Sidebar({ groups }: Props) {
+export default function Sidebar({ groups, user }: Props) {
 
 
   const [edit, setEdit] = useAtom(editMode)
@@ -41,30 +42,38 @@ export default function Sidebar({ groups }: Props) {
       </Link>
       <div className="w-full h-full flex flex-col flex-grow justify-center items-center space-y-2 py-10">
         {
-          groups?.map((group, i) => {
-            return <Link to={`/group/${group._id}`} className={`${location === `/group/${group._id}` ? activeClasses : inactiveClasses} ${defaultClasses}`} key={i}>
-              {location === `/group/${group._id}` && <Curves />}
-              <FiFolder className="relative z-10 cursor-pointer" size={'1.5rem'} />
-              <FiFolder className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
-            </Link>
-          })
-        }
-        {
-          edit ?
-            <button onClick={() => { setShowDialog({ type: "add-group" }) }} className={`${defaultClasses} ${inactiveClasses}`}>
-              <FiPlusSquare className="relative z-10 cursor-pointer" size={'1.5rem'} />
-              <FiPlusSquare className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
+          user &&
+          <>
+            {
+              groups?.map((group, i) => {
+                return <Link to={`/group/${group._id}`} className={`${location === `/group/${group._id}` ? activeClasses : inactiveClasses} ${defaultClasses}`} key={i}>
+                  {location === `/group/${group._id}` && <Curves />}
+                  <FiFolder className="relative z-10 cursor-pointer" size={'1.5rem'} />
+                  <FiFolder className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
+                </Link>
+              })
+            }
+            {
+              edit ?
+                <button onClick={() => { setShowDialog({ type: "add-group" }) }} className={`${defaultClasses} ${inactiveClasses}`}>
+                  <FiPlusSquare className="relative z-10 cursor-pointer" size={'1.5rem'} />
+                  <FiPlusSquare className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
 
-            </button>
-            :
-            null
+                </button>
+                :
+                null
+            }
+          </>
         }
       </div>
-      <Link to={'/settings'} className={`${location === '/settings' ? activeClasses : inactiveClasses} ${defaultClasses}`}>
-        {location === `/settings` && <Curves />}
-        <FiSettings className="relative z-10 cursor-pointer" size={'1.5rem'} />
-        <FiSettings className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
-      </Link>
+      {
+        user &&
+        <Link to={'/settings'} className={`${location === '/settings' ? activeClasses : inactiveClasses} ${defaultClasses}`}>
+          {location === `/settings` && <Curves />}
+          <FiSettings className="relative z-10 cursor-pointer" size={'1.5rem'} />
+          <FiSettings className="absolute group-hover:blur-sm transition-all" size={'1.5rem'} />
+        </Link>
+      }
     </aside>
   )
 }

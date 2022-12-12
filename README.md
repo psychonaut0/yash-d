@@ -31,12 +31,13 @@ An homepage for your server, written with `NodeJS` and `React`.
 ## TODO
 
 - Basic features:
-  - Edit tile
-  - Add tile to a group
+  - ~~Edit tile~~
+  - ~~Add tile to a group~~
   - Code cleanup
   - Global settings
   - Bug fixing
   - Other...
+- Better auth
 - Better README
 - Search
 - Custom styling

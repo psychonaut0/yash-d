@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { CiWarning } from "react-icons/ci";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { getGroups } from "../../api/groups";
 import { getUser } from "../../api/user";
 import Dialog from "../elements/dialogs/global";
@@ -24,8 +25,15 @@ export default function Layout({ children }: Props) {
     queryKey: ['user']
   })
 
-
+  const navigate = useNavigate()
   const location = useLocation().pathname
+
+  useEffect(() => {
+    if(!user.data){
+      navigate('/login')
+    }
+  }, [])
+  
 
 
   const allowedPaths = [

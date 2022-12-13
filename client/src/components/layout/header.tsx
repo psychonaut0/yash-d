@@ -3,17 +3,19 @@ import { useEffect, useState } from "react"
 import { BiCheck, BiCheckSquare, BiEdit, BiLogIn, BiSearch, BiUser, BiUserCheck, BiUserCircle } from "react-icons/bi"
 import { Link } from "react-router-dom"
 import { UserInterface } from "../../interfaces/api"
-import { editMode } from "../../state"
+import { editMode, searchString } from "../../state"
 import UserMenu from "./userMenu"
 
 export default function Header({ user }: { user: UserInterface | Boolean | undefined }) {
 
 
   const [edit, setEdit] = useAtom(editMode)
+  const [searchQuery, setSearchQuery] = useAtom(searchString)
 
   const [opacity, setOpacity] = useState(1.00)
 
   const [showUserMenu, setShowUserMenu] = useState<Boolean>(false)
+  
 
   // Opacity Scroll handler
   function handleScrollEvent() {
@@ -38,7 +40,7 @@ export default function Header({ user }: { user: UserInterface | Boolean | undef
     }
   }, [])
 
-  let name: String = "Admin"
+
 
   return (
     <>
@@ -47,12 +49,17 @@ export default function Header({ user }: { user: UserInterface | Boolean | undef
         opacity !== 0 ?
           <header style={{ opacity: opacity }} className="w-full py-8 flex justify-between px-10 fixed top-0 z-50">
             <h1 className="text-4xl font-regular font-accent">
-              Welcome{`${user ? ' back' : ''}`}, <span className="text-primary font-bold">{`${user ? name : 'Visitor'}`}</span>
+              Welcome{`${user ? ' back' : ''}`}, <span className="text-primary font-bold">{`${user ? (user as UserInterface).username : 'Visitor'}`}</span>
             </h1>
             <div className="flex items-center space-x-4">
               <div className="group relative flex items-center">
                 <BiSearch className="peer transition-all cursor-pointer absolute right-2 text-primary" size={"2rem"} />
-                <input placeholder="Search..." className="hover:p-2 hover:w-full hover:bg-dark-800 hover:border-dark-600 focus:p-2 focus:w-full focus:bg-dark-800 focus:border-dark-600 transition-all peer-hover:w-auto peer-hover:border-dark-600 w-[0%] p-2 bg-transparent peer-hover:bg-dark-800 focus:outline-none rounded-md border-2 border-transparent" />
+                <input 
+                value={searchQuery} 
+                onChange={(e) => {setSearchQuery(e.target.value)}} 
+                placeholder="Search..." 
+                className={`
+                ${searchQuery !== '' ? 'w-full bg-dark-800 border-dark-600' : 'hover:w-full hover:bg-dark-800 hover:border-dark-600 focus:w-full focus:bg-dark-800 peer-hover:w-auto peer-hover:border-dark-600 peer-hover:bg-dark-800 transition-all w-[0%]  bg-transparent border-transparent'} focus:border-primary focus:outline-none p-2 rounded-md border-2`} />
               </div>
               {
                 user ?

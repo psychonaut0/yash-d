@@ -25,6 +25,15 @@ An homepage for your server, written with `NodeJS` and `React`.
 - Data stored in `MongoDB`.
 - User sessions stored in `Redis`.
 
+## Getting started
+
+### Development
+
+#### Installation
+
+
+
+
 
 
 
@@ -37,7 +46,7 @@ An homepage for your server, written with `NodeJS` and `React`.
   - Global settings
   - Bug fixing
   - Other...
-- Better auth
+- ~~Better auth~~
 - Better README
 - Search
 - Custom styling

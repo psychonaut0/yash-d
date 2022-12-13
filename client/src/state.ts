@@ -9,3 +9,5 @@ type Dialogs = {
 export const editMode = atom(false)
 
 export const dialogType = atom<Dialogs>({type: "none"})
+
+export const searchString = atom<string>('')

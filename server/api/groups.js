@@ -7,10 +7,11 @@ const {
   deleteGroup,
   addTileToGroup,
   getGroup
-} = require('../controller/group')
+} = require('../controller/group');
+const { isAuth } = require("../middleware/errors");
 
-router.route('/').get(getGroups).post(setGroup)
-router.route('/:id').get(getGroup).put(updateGroup).delete(deleteGroup)
-router.route('/:id/tile').put(addTileToGroup)
+router.route('/').get(isAuth, getGroups).post(isAuth, setGroup)
+router.route('/:id').get(isAuth, getGroup).put(isAuth, updateGroup).delete(isAuth, deleteGroup)
+router.route('/:id/tile').put(isAuth, addTileToGroup)
 
 module.exports = router

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiRightArrow, BiRightArrowAlt, BiX } from "react-icons/bi";
 import { redirect, useNavigate } from "react-router-dom";
@@ -16,6 +16,8 @@ export default function Login() {
   const { register, handleSubmit } = useForm<InputValues>();
   const navigate = useNavigate()
 
+  const [error, setError] = useState(false)
+
   const queryClient = useQueryClient()
 
   const user = useQuery({
@@ -27,12 +29,13 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: (data: InputValues) => login(data),
     onMutate: async (newGroup) => {
+      setError(false)
       await queryClient.cancelQueries({ queryKey: ["user"] })
       const prevGroup = queryClient.getQueryData<UserInterface>(["user"])
       return { prevGroup }
     },
     onError: (err, newGroup, context) => {
-      console.error(err);
+      setError(true)
       queryClient.setQueryData(["user"], context?.prevGroup)
     },
     onSettled: (data) => {
@@ -65,17 +68,23 @@ export default function Login() {
         <label className="w-full flex flex-col space-y-2">
           <p className="pl-2 text-xl">Username: <span className="text-primary">*</span></p>
           <div className="relative w-full flex flex-col justify-center items-center">
-            <input required {...register('username')} className="peer relative z-10 w-full py-2 px-2 border-0 bg-dark-600 rounded-md focus:border-0 focus:outline-none" placeholder="Your cool username..." type={"text"} />
+            <input onFocus={() => {setError(false)}} required {...register('username')} className={`${error ? "border-2 border-red-500" : "border-0"} peer relative z-10 w-full py-2 px-2 bg-dark-600 rounded-md focus:border-0 focus:outline-none`} placeholder="Your cool username..." type={"text"} />
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
         <label className="w-full flex flex-col space-y-2">
           <p className="pl-2 text-xl">Password: <span className="text-primary">*</span></p>
           <div className="relative w-full flex flex-col justify-center items-center">
-            <input required {...register('password')} className="peer relative z-10 w-full py-2 px-2 border-0 bg-dark-600 rounded-md focus:border-0 focus:outline-none" placeholder="Your super secret password..." type={"password"} />
+            <input onFocus={() => {setError(false)}} required {...register('password')} className={`${error ? "border-2 border-red-500" : "border-0"} peer relative z-10 w-full py-2 px-2  bg-dark-600 rounded-md focus:border-0 focus:outline-none`} placeholder="Your super secret password..." type={"password"} />
             <div className=" absolute transition-all duration-500 w-[0%]  peer-focus:w-[101%] peer-focus:h-[110%] bg-primary rounded-md" />
           </div>
         </label>
+        {
+          error ?
+          <p className="text-red-500">Wrong username or password</p>
+          :
+          null
+        }
         <div className="w-full flex space-x-6 justify-end px-6 pt-4">
           <button type="submit" className="flex items-center  px-4 py-2 bg-primary rounded-md border-primary-400 border ">Submit <BiRightArrowAlt size={"2rem"} className="pl-2" /></button>
         </div>

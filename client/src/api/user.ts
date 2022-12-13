@@ -14,8 +14,7 @@ export async function login(params: any) {
     return data
   }
   catch (err: any) {
-
-    return err.response.data
+    throw new Error(err.response.data)
   }
 }
 
@@ -38,7 +37,6 @@ export async function getUser() {
     return data
   }
   catch (err) {
-    console.clear()
     return false
   }
 }
